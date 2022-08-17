@@ -84,6 +84,7 @@ export default class MenuBuilder {
         },
       ],
     };
+    // @ts-ignore
     const subMenuEdit: DarwinMenuItemConstructorOptions = {
       label: 'Edit',
       submenu: [
@@ -98,6 +99,23 @@ export default class MenuBuilder {
           accelerator: 'Command+A',
           selector: 'selectAll:',
         },
+      ],
+    };
+    const subMenuDatabase: DarwinMenuItemConstructorOptions = {
+      label: 'Database',
+      submenu: [
+        {
+          label: 'Open Database...',
+          accelerator: 'Command+O',
+          selector: 'open:',
+        },
+        {
+          label: 'Tools...',
+          accelerator: 'Shift+Command+T',
+          selector: 'tools:',
+        },
+        { type: 'separator' },
+        { label: 'Query tool', accelerator: 'Command+X', selector: 'query:' },
       ],
     };
     const subMenuViewDev: MenuItemConstructorOptions = {
@@ -151,6 +169,7 @@ export default class MenuBuilder {
         { label: 'Bring All to Front', selector: 'arrangeInFront:' },
       ],
     };
+    // @ts-ignore
     const subMenuHelp: MenuItemConstructorOptions = {
       label: 'Help',
       submenu: [
@@ -189,7 +208,7 @@ export default class MenuBuilder {
         ? subMenuViewDev
         : subMenuViewProd;
 
-    return [subMenuAbout, subMenuEdit, subMenuView, subMenuWindow, subMenuHelp];
+    return [subMenuAbout, subMenuDatabase, subMenuView, subMenuWindow];
   }
 
   buildDefaultTemplate() {
