@@ -5,6 +5,7 @@ import {
   BrowserWindow,
   MenuItemConstructorOptions,
 } from 'electron';
+import { Channels, COMMAND_DB_OPEN, COMMAND_DB_TOOLS } from './constants';
 
 interface DarwinMenuItemConstructorOptions extends MenuItemConstructorOptions {
   selector?: string;
@@ -16,6 +17,10 @@ export default class MenuBuilder {
 
   constructor(mainWindow: BrowserWindow) {
     this.mainWindow = mainWindow;
+  }
+
+  sendCommandToRender(command: string) {
+    this.mainWindow.webContents.send(Channels.IPC_COMMAND_CHANNEL, command);
   }
 
   buildMenu(): Menu {
@@ -107,12 +112,16 @@ export default class MenuBuilder {
         {
           label: 'Open Database...',
           accelerator: 'Command+O',
-          selector: 'open:',
+          click: () => {
+            this.sendCommandToRender(COMMAND_DB_OPEN);
+          },
         },
         {
           label: 'Tools...',
           accelerator: 'Shift+Command+T',
-          selector: 'tools:',
+          click: () => {
+            this.sendCommandToRender(COMMAND_DB_TOOLS);
+          },
         },
         { type: 'separator' },
         { label: 'Query tool', accelerator: 'Command+X', selector: 'query:' },
