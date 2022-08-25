@@ -1,27 +1,42 @@
 import { createRoot } from 'react-dom/client';
 // import App from './App';
-import { VKDemo } from './VKDemo';
+import { autorun } from 'mobx';
+import { App } from './App';
 import { modalStore } from './modalStore';
-import { Channels, COMMAND_DB_OPEN } from '../main/constants';
+import { Channels, COMMAND_DB_OPEN, COMMAND_INFO } from '../main/constants';
+import { MODAL_PAGE_OPEN_DB } from './constants';
+import { dbStore } from './dbStore';
 
-const MODAL_PAGE_FILTERS = 'filters';
 const container = document.getElementById('root')!;
 const root = createRoot(container);
-root.render(<VKDemo />);
+root.render(<App />);
 
+const ipcr = window.electron.ipcRenderer;
 // calling IPC exposed from preload script
-window.electron.ipcRenderer.once(Channels.IPC_EXAMPLE_CHANNEL, (arg) => {
+ipcr.once(Channels.IPC_EXAMPLE_CHANNEL, (arg) => {
   // eslint-disable-next-line no-console
   console.log(arg);
 });
-window.electron.ipcRenderer.on(Channels.IPC_COMMAND_CHANNEL, (arg) => {
-  // eslint-disable-next-line no-console
-  console.log('COMMAND', arg);
-  switch (arg) {
+ipcr.on(Channels.IPC_COMMAND_CHANNEL, (...args) => {
+  const [command, data] = args;
+  console.log('COMMAND:', command, data);
+  switch (command) {
     case COMMAND_DB_OPEN:
-      modalStore.openModal(MODAL_PAGE_FILTERS);
+      modalStore.openModal(MODAL_PAGE_OPEN_DB);
+      break;
+    case COMMAND_INFO:
+      if (data && typeof data === 'string') {
+        dbStore.setInfo(data);
+      } else if (data && typeof data === 'object') {
+        dbStore.setInfo(JSON.stringify(data));
+      }
       break;
     default:
   }
 });
-window.electron.ipcRenderer.sendMessage(Channels.IPC_EXAMPLE_CHANNEL, ['ping']);
+ipcr.sendMessage(Channels.IPC_EXAMPLE_CHANNEL, ['ping']);
+ipcr.sendMessage(Channels.IPC_EVENT_CHANNEL, ['ready']);
+
+autorun(() => {
+  console.log('index:dbStore.file=', dbStore.info.fileName);
+});

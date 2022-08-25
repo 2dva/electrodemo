@@ -5,9 +5,13 @@ module.exports = {
     'import/no-extraneous-dependencies': 'off',
     'import/no-unresolved': 'error',
     // Since React 17 and typescript 4.1 you can safely disable the rule
+    'no-console': 'off',
     'react/react-in-jsx-scope': 'off',
     'import/prefer-default-export': 'off',
     '@typescript-eslint/ban-ts-comment': 'off',
+    'max-len': 'off',
+    'consisntent-return': 'off',
+    'no-else-return': 'off',
   },
   parserOptions: {
     ecmaVersion: 2020,

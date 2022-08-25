@@ -15,6 +15,7 @@ import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 import { Channels } from './constants';
+import { checkDBExamples } from '../db/manager';
 
 class AppUpdater {
   constructor() {
@@ -30,6 +31,18 @@ ipcMain.on('ipc-example', async (event, arg) => {
   const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
   console.log(msgTemplate(arg));
   event.reply(Channels.IPC_EXAMPLE_CHANNEL, msgTemplate('pong'));
+});
+
+ipcMain.on(Channels.IPC_EVENT_CHANNEL, async (_event, arg) => {
+  const stringEvent = arg.toString();
+  console.log('IPC:Event:', stringEvent);
+  switch (stringEvent) {
+    case 'ready':
+      console.log('IPC:ReadyEvent');
+      checkDBExamples();
+      break;
+    default:
+  }
 });
 
 if (process.env.NODE_ENV === 'production') {

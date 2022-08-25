@@ -5,7 +5,7 @@ interface Modal {
   body: string | null;
 }
 
-class ModalStore {
+export class ModalStore {
   modal: Modal = {
     open: false,
     body: null,

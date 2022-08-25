@@ -5,7 +5,14 @@ import {
   BrowserWindow,
   MenuItemConstructorOptions,
 } from 'electron';
-import { Channels, COMMAND_DB_OPEN, COMMAND_DB_TOOLS } from './constants';
+import { existsSync, readFile } from 'fs-extra';
+import path from 'path';
+import {
+  Channels,
+  COMMAND_DB_OPEN,
+  COMMAND_DB_TOOLS,
+  COMMAND_INFO,
+} from './constants';
 
 interface DarwinMenuItemConstructorOptions extends MenuItemConstructorOptions {
   selector?: string;
@@ -19,8 +26,12 @@ export default class MenuBuilder {
     this.mainWindow = mainWindow;
   }
 
-  sendCommandToRender(command: string) {
-    this.mainWindow.webContents.send(Channels.IPC_COMMAND_CHANNEL, command);
+  sendCommandToRender(command: string, data: object | null = null) {
+    this.mainWindow.webContents.send(
+      Channels.IPC_COMMAND_CHANNEL,
+      command,
+      data
+    );
   }
 
   buildMenu(): Menu {
@@ -124,7 +135,28 @@ export default class MenuBuilder {
           },
         },
         { type: 'separator' },
-        { label: 'Query tool', accelerator: 'Command+X', selector: 'query:' },
+        {
+          label: 'Show info',
+          accelerator: 'Command+I',
+          click: () => {
+            const fName = 'test.txt';
+            const fileName = path.resolve(__dirname, fName);
+            if (existsSync(fileName)) {
+              readFile(fileName, 'utf-8', (err, data) => {
+                if (err) {
+                  console.log(
+                    `An error ocurred reading the file :${err.message}`
+                  );
+                  return;
+                }
+                this.sendCommandToRender(COMMAND_INFO, { data });
+              });
+            }
+
+            // // const data = { wtf: 123 };
+            // this.sendCommandToRender(COMMAND_INFO, data);
+          },
+        },
       ],
     };
     const subMenuViewDev: MenuItemConstructorOptions = {
@@ -279,37 +311,6 @@ export default class MenuBuilder {
                   },
                 },
               ],
-      },
-      {
-        label: 'Help',
-        submenu: [
-          {
-            label: 'Learn More',
-            click() {
-              shell.openExternal('https://electronjs.org');
-            },
-          },
-          {
-            label: 'Documentation',
-            click() {
-              shell.openExternal(
-                'https://github.com/electron/electron/tree/main/docs#readme'
-              );
-            },
-          },
-          {
-            label: 'Community Discussions',
-            click() {
-              shell.openExternal('https://www.electronjs.org/community');
-            },
-          },
-          {
-            label: 'Search Issues',
-            click() {
-              shell.openExternal('https://github.com/electron/electron/issues');
-            },
-          },
-        ],
       },
     ];
 
