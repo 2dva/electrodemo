@@ -7,35 +7,14 @@ import {
   Panel,
   Text,
 } from '@vkontakte/vkui';
-import React, { useEffect, useState } from 'react';
-// import { existsSync, readFile } from 'fs-extra';
-// import path from 'path';
 import { observer } from 'mobx-react';
+import { useState } from 'react';
 import { IPanelProps, MODAL_PAGE_OPEN_DB } from '../constants';
-import { modalStore } from '../modalStore';
-import { dbStore } from '../dbStore';
-// import {existsSync} from "fs";
+import { modalStore } from '../stores/modalStore';
+import { dbStore } from '../stores/dbStore';
 
 export const PanelSettings = observer(({ id }: IPanelProps) => {
-  const [mode, setMode] = React.useState('default');
-  // const [disabled, setDisabled] = React.useState(false);
-  const [fileContent, setFileContent] = useState('<empty>');
-
-  useEffect(() => {
-    // const fileName = '../README.md';
-    // if (existsSync(fileName)) {
-    //   readFile(fileName, 'utf-8', (err, data) => {
-    //     if (err) {
-    //       console.log(`An error ocurred reading the file :${err.message}`);
-    //       return;
-    //     }
-    //     // app.getGPUInfo('basic')
-    //     // Change how to handle the file content
-    //     console.log(`The file content is : ${data}`);
-    //     setFileContent(data);
-    //   });
-    // }
-  }, []);
+  const [mode, setMode] = useState('default');
 
   return (
     <Panel id={id}>
@@ -66,7 +45,6 @@ export const PanelSettings = observer(({ id }: IPanelProps) => {
           </Button>
         </FormItem>
         <Caption>{dbStore.info.fileName}</Caption>
-        <Text>{fileContent}</Text>
         <Text>{dbStore.info.systemInfo}</Text>
       </Group>
     </Panel>

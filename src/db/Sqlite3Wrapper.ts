@@ -1,4 +1,4 @@
-import { IEngineWrapper } from '../main/constants';
+import { IEngineWrapper, IStatement } from '../main/constants';
 
 const sqlite3 = require('sqlite3');
 
@@ -10,7 +10,7 @@ export class Sqlite3Wrapper implements IEngineWrapper {
   }
 
   open(filename: string) {
-    this.database = new sqlite3.Database(filename, (err: never) => {
+    this.database = new sqlite3.Database(filename, (err: unknown) => {
       if (err) {
         console.error('Sqlite3:Database opening error: ', err);
       } else {
@@ -19,10 +19,14 @@ export class Sqlite3Wrapper implements IEngineWrapper {
     });
   }
 
-  all(query: string, cb: (err: never, rows: never) => void) {
-    return this.database.all(query, (err: never, rows: never) => {
-      console.log(`Sqlite3:Database query success`, rows);
+  all(query: string, cb: (err: unknown, rows: unknown[]) => void) {
+    return this.database.all(query, (err: unknown, rows: unknown[]) => {
+      console.log(`Sqlite3:Database query success`);
       cb(err, rows);
     });
+  }
+
+  prepare(query: string): IStatement {
+    return this.database.prepare(query);
   }
 }

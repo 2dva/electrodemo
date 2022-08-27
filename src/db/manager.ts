@@ -1,38 +1,37 @@
 import path from 'path';
-import { existsSync } from 'fs-extra';
-import { getEngine } from './engine';
-import { IEngineWrapper } from '../main/constants';
+import { execQuery, getQuery, openFileDatabase } from './engine';
 
 const fName = '../test.db';
 const filename = path.resolve(__dirname, fName);
-let engine: IEngineWrapper | null;
 
-export const openFileDatabase = (fileName: string): Promise<boolean> => {
-  return new Promise((resolve, reject) => {
-    engine = getEngine();
-    if (engine) {
-      if (existsSync(fileName)) {
-        engine.open(fileName);
-        return resolve(true);
-      } else {
-        return reject(new Error(`Couldnt open file ${fileName}`));
-      }
-    }
-    return reject(new Error('Cant create DB Engine'));
-  });
+const SQL_SELECT_REC_ROWS =
+  'SELECT rec_id, date, cat_id, created, title FROM rec';
+const SQL_INSERT_REC_ROW =
+  'INSERT INTO rec (date, cat_id, title, text, created, tags) VALUES (date(), ?, ?, ?, datetime(), ?)';
+
+const insertRandomValues = (num: number) => {
+  // const stmt = db.prepare("INSERT INTO lorem VALUES (?)");
+  for (let i = 0; i < num; i++) {
+    execQuery(SQL_INSERT_REC_ROW, [1, `title ${i}`, `text ${i}`, 'news']).catch(
+      () => {}
+    );
+    // stmt.run("Ipsum " + i);
+  }
 };
 
-export const getQuery = (query: string): Promise<Array<any>> => {
-  return new Promise((resolve, reject) => {
-    engine?.all(query, (err: never, rows: Array<any>) => {
-      if (err) {
-        console.log(`getQuery: query error`, err);
-        reject(err);
-      } else {
-        console.log(`getQuery: query success`, rows);
-        resolve(rows);
-      }
+export const dbFetchRecRows = () => {
+  return getQuery(SQL_SELECT_REC_ROWS)
+    .then((rows) => {
+      return rows;
+    })
+    .catch((err) => {
+      console.log(`Async Database query error`, err);
     });
+};
+
+export const openDB = () => {
+  return openFileDatabase(filename).catch((err) => {
+    console.log(`Async Database open error`, err);
   });
 };
 
@@ -40,13 +39,5 @@ export const checkDBExamples = () => {
   openFileDatabase(filename).catch((err) => {
     console.log(`Async Database open error`, err);
   });
-
-  getQuery('SELECT * FROM recs')
-    .then((rows) => {
-      console.log(`Async Database query success`, rows);
-      return true;
-    })
-    .catch((err) => {
-      console.log(`Async Database query error`, err);
-    });
+  insertRandomValues(10);
 };

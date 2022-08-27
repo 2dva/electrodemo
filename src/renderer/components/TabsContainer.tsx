@@ -1,4 +1,4 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 import {
   Group,
   HorizontalScroll,
@@ -10,9 +10,19 @@ import {
 } from '@vkontakte/vkui';
 import { PanelRecs } from './PanelRecs';
 import { PanelSettings } from './PanelSettings';
+import { fetchRecRows } from '../stores/recStore';
 
 export const TabsContainer = () => {
-  const [selected, setSelected] = React.useState('recs');
+  const [selected, setSelected] = useState('recs');
+
+  const openRecsTab = () => {
+    setSelected('recs');
+    fetchRecRows();
+  };
+
+  useEffect(() => {
+    openRecsTab();
+  }, []);
 
   return (
     <Group>
@@ -20,7 +30,7 @@ export const TabsContainer = () => {
         <HorizontalScroll arrowSize="m">
           <TabsItem
             selected={selected === 'recs'}
-            onClick={() => setSelected('recs')}
+            onClick={() => openRecsTab()}
           >
             Recs
           </TabsItem>

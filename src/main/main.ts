@@ -15,7 +15,8 @@ import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 import { Channels } from './constants';
-import { checkDBExamples } from '../db/manager';
+import { openDB } from '../db/manager';
+import { initApi } from './api';
 
 class AppUpdater {
   constructor() {
@@ -27,11 +28,19 @@ class AppUpdater {
 
 let mainWindow: BrowserWindow | null = null;
 
-ipcMain.on('ipc-example', async (event, arg) => {
+initApi();
+ipcMain.handle(Channels.IPC_EXAMPLE_CHANNEL, (_event, arg) => {
   const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
   console.log(msgTemplate(arg));
-  event.reply(Channels.IPC_EXAMPLE_CHANNEL, msgTemplate('pong'));
+  return 'pong';
+  // event.reply(Channels.IPC_EXAMPLE_CHANNEL, msgTemplate('pong'));
 });
+
+// ipcMain.on(Channels.IPC_EXAMPLE_CHANNEL, async (event, arg) => {
+//   const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
+//   console.log(msgTemplate(arg));
+//   event.reply(Channels.IPC_EXAMPLE_CHANNEL, msgTemplate('pong'));
+// });
 
 ipcMain.on(Channels.IPC_EVENT_CHANNEL, async (_event, arg) => {
   const stringEvent = arg.toString();
@@ -39,10 +48,14 @@ ipcMain.on(Channels.IPC_EVENT_CHANNEL, async (_event, arg) => {
   switch (stringEvent) {
     case 'ready':
       console.log('IPC:ReadyEvent');
-      checkDBExamples();
+      openDB().catch((err) => {
+        console.log(`Async Database open error`, err);
+      });
+      // checkDBExamples();
       break;
     default:
   }
+  return false;
 });
 
 if (process.env.NODE_ENV === 'production') {

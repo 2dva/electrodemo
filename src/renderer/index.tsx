@@ -1,17 +1,19 @@
 import { createRoot } from 'react-dom/client';
-// import App from './App';
 import { autorun } from 'mobx';
-import { App } from './App';
-import { modalStore } from './modalStore';
+import App from './App';
+import { modalStore } from './stores/modalStore';
 import { Channels, COMMAND_DB_OPEN, COMMAND_INFO } from '../main/constants';
 import { MODAL_PAGE_OPEN_DB } from './constants';
-import { dbStore } from './dbStore';
+import { dbStore } from './stores/dbStore';
+import { setRenderer } from './simpleBridge';
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
 root.render(<App />);
 
 const ipcr = window.electron.ipcRenderer;
+setRenderer(ipcr);
+
 // calling IPC exposed from preload script
 ipcr.once(Channels.IPC_EXAMPLE_CHANNEL, (arg) => {
   // eslint-disable-next-line no-console
@@ -34,7 +36,14 @@ ipcr.on(Channels.IPC_COMMAND_CHANNEL, (...args) => {
     default:
   }
 });
-ipcr.sendMessage(Channels.IPC_EXAMPLE_CHANNEL, ['ping']);
+ipcr
+  .invoke(Channels.IPC_EXAMPLE_CHANNEL, ['ping'])
+  .then((args) => {
+    console.log('EXMAPLE invoke() returnned:', args);
+    return true;
+  })
+  .catch(() => {});
+// ipcr.sendMessage(Channels.IPC_EXAMPLE_CHANNEL, ['ping']);
 ipcr.sendMessage(Channels.IPC_EVENT_CHANNEL, ['ready']);
 
 autorun(() => {

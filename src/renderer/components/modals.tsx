@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import {
   Button,
   ButtonGroup,
@@ -6,9 +7,8 @@ import {
   Group,
   Input,
 } from '@vkontakte/vkui';
-import { dbStore } from 'renderer/dbStore';
-import { useRef } from 'react';
-import { modalStore } from '../modalStore';
+import { dbStore } from 'renderer/stores/dbStore';
+import { modalStore } from '../stores/modalStore';
 
 export const ModalGroupOpenDB = () => {
   const textInput = useRef<HTMLInputElement>(null);

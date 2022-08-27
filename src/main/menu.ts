@@ -100,7 +100,6 @@ export default class MenuBuilder {
         },
       ],
     };
-    // @ts-ignore
     const subMenuEdit: DarwinMenuItemConstructorOptions = {
       label: 'Edit',
       submenu: [
@@ -210,7 +209,6 @@ export default class MenuBuilder {
         { label: 'Bring All to Front', selector: 'arrangeInFront:' },
       ],
     };
-    // @ts-ignore
     const subMenuHelp: MenuItemConstructorOptions = {
       label: 'Help',
       submenu: [
