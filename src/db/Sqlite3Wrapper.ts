@@ -1,10 +1,9 @@
-import { Database } from 'sqlite3';
+import sqlite, { Database } from 'sqlite3';
 import { IEngineWrapper, IStatement } from '../main/constants';
 
-const sqlite3 = require('sqlite3');
-
 const createDatabase = (filename: string) => {
-  return new sqlite3.Database(filename, (err: Error) => {
+  const sqlite3 = sqlite.verbose();
+  return new sqlite3.Database(filename, (err: Error | null) => {
     if (err) {
       console.error('Sqlite3:Database opening error: ', err);
     } else {
