@@ -24,20 +24,19 @@ const getEngine = (engineType: Engines = Engines.DB_ENGINE_SQLITE3) => {
     case Engines.DB_ENGINE_SQLITE3:
     default:
   }
-  return new Sqlite3Wrapper();
+  return Sqlite3Wrapper;
 };
 
 export const openFileDatabase = (fileName: string): Promise<boolean> => {
   return new Promise((resolve, reject) => {
-    engine = getEngine();
-    if (!engine) {
-      return reject(new Error('Cant create DB Engine'));
-    }
     if (!existsSync(fileName)) {
       return reject(new Error(`Couldnt open file ${fileName}`));
     }
 
-    engine.open(fileName);
+    engine = new (getEngine())(fileName);
+    if (!engine) {
+      return reject(new Error('Cant create DB Engine'));
+    }
     return resolve(true);
   });
 };

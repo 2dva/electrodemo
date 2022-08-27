@@ -1,3 +1,5 @@
+import { Database } from 'sqlite3';
+
 export enum Channels {
   IPC_COMMAND_CHANNEL = 'ipc-command',
   IPC_EVENT_CHANNEL = 'ipc-event',
@@ -10,7 +12,6 @@ export interface IStatement {
 }
 
 export interface IEngineWrapper {
-  open(fileName: string): void;
   all(query: string, cb: (err: unknown, rows: unknown[]) => void): void;
   prepare(query: string): IStatement;
 }
