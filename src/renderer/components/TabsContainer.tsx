@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
 import {
+  Calendar,
+  CustomSelect,
+  FormItem,
   Group,
   HorizontalScroll,
   Panel,
@@ -25,7 +28,7 @@ export const TabsContainer = () => {
   }, []);
 
   return (
-    <Group>
+    <Group style={{ height: '100%' }}>
       <Tabs mode="default">
         <HorizontalScroll arrowSize="m">
           <TabsItem
@@ -35,10 +38,10 @@ export const TabsContainer = () => {
             Recs
           </TabsItem>
           <TabsItem
-            selected={selected === 'notes'}
-            onClick={() => setSelected('notes')}
+            selected={selected === 'demo'}
+            onClick={() => setSelected('demo')}
           >
-            Notes
+            Demo
           </TabsItem>
           <TabsItem
             selected={selected === 'calendar'}
@@ -55,12 +58,36 @@ export const TabsContainer = () => {
         </HorizontalScroll>
       </Tabs>
       <br />
-      <View activePanel={selected}>
+      <View activePanel={selected} style={{ bottom: 0, left: 0 }}>
         <PanelRecs id="recs" />
         <PanelSettings id="settings" />
-        <Panel id="notes">
+        <Panel id="demo">
           <Group>
-            <SimpleCell>NOTES CELL</SimpleCell>
+            <SimpleCell>DEMO CELL</SimpleCell>
+            <FormItem top="mode">
+              <CustomSelect
+                value="default"
+                options={[
+                  {
+                    label: 'default',
+                    value: 'default',
+                  },
+                  {
+                    label: 'accent',
+                    value: 'accent',
+                  },
+                  {
+                    label: 'secondary',
+                    value: 'secondary',
+                  },
+                ]}
+              />
+            </FormItem>
+          </Group>
+        </Panel>
+        <Panel id="calendar" centered>
+          <Group>
+            <Calendar enableTime disablePickers showNeighboringMonth size="m" />
           </Group>
         </Panel>
       </View>
