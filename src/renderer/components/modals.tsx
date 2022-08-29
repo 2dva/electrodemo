@@ -7,7 +7,7 @@ import {
   Group,
   Input,
 } from '@vkontakte/vkui';
-import { dbStore } from 'renderer/stores/dbStore';
+import { dbStore } from '../stores/dbStore';
 import { modalStore } from '../stores/modalStore';
 
 export const ModalGroupOpenDB = () => {

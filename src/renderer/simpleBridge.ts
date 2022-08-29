@@ -19,6 +19,5 @@ export const executeRemoteFunction = (
     .then((result) => {
       console.log('Bridge: IPC_EVENT_CHANNEL: result=', result);
       return result;
-    })
-    .catch(() => {});
+    });
 };

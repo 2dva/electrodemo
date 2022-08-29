@@ -98,6 +98,7 @@
     "setupFiles": [
       "./.erb/scripts/check-build-exists.ts"
     ],
+    "testRegex": "((\\.|/*.)(test))\\.(js|ts|tsx|jsx)?$",
     "testEnvironment": "jsdom",
     "testEnvironmentOptions": {
       "url": "http://localhost/"
