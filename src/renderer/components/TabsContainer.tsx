@@ -1,19 +1,9 @@
 import { useEffect, useState } from 'react';
-import {
-  Calendar,
-  CustomSelect,
-  FormItem,
-  Group,
-  HorizontalScroll,
-  Panel,
-  SimpleCell,
-  Tabs,
-  TabsItem,
-  View,
-} from '@vkontakte/vkui';
+import { Calendar, Group, HorizontalScroll, Panel, Tabs, TabsItem, View } from '@vkontakte/vkui';
 import { PanelRecs } from './PanelRecs';
 import { PanelSettings } from './PanelSettings';
 import { fetchRecRows } from '../stores/recStore';
+import { PanelDemo } from './PanelDemo';
 
 export const TabsContainer = () => {
   const [selected, setSelected] = useState('recs');
@@ -49,30 +39,7 @@ export const TabsContainer = () => {
       <View activePanel={selected} style={{ bottom: 0, left: 0 }}>
         <PanelRecs id="recs" />
         <PanelSettings id="settings" />
-        <Panel id="demo">
-          <Group>
-            <SimpleCell>DEMO CELL</SimpleCell>
-            <FormItem top="mode">
-              <CustomSelect
-                value="default"
-                options={[
-                  {
-                    label: 'default',
-                    value: 'default',
-                  },
-                  {
-                    label: 'accent',
-                    value: 'accent',
-                  },
-                  {
-                    label: 'secondary',
-                    value: 'secondary',
-                  },
-                ]}
-              />
-            </FormItem>
-          </Group>
-        </Panel>
+        <PanelDemo id="demo" />
         <Panel id="calendar" centered>
           <Group>
             <Calendar enableTime disablePickers showNeighboringMonth size="m" />
