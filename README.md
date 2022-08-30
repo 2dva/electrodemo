@@ -1,11 +1,13 @@
-<img src=".erb/img/erb-banner.svg" width="100%" />
-
+#Electrodemo
 <br>
 
 <p>
-  Electron React Boilerplate uses <a href="https://electron.atom.io/">Electron</a>, <a href="https://facebook.github.io/react/">React</a>, <a href="https://github.com/reactjs/react-router">React Router</a>, <a href="https://webpack.js.org/">Webpack</a> and <a href="https://www.npmjs.com/package/react-refresh">React Fast Refresh</a>.
+  Electrodemo uses <a href="https://github.com/electron-react-boilerplate/electron-react-boilerplate">Electron React Boilerplate</a>, <a href="https://mobx.js.org/">MobX</a>, <a href="https://vkcom.github.io/VKUI/">VKUI</a>, <a href="https://www.npmjs.com/package/sqlite3">node-sqlite3</a> and <a href="https://github.com/adazzle/react-data-grid">react-data-grid</a>.
 </p>
-
+<img src=".erb/img/erb-logo.png" width="100" />
+<img src="https://mobx.js.org/assets/mobx.png" alt="logo" width="100" />
+<img src="https://raw.githubusercontent.com/VKCOM/VKUI/master/styleguide/assets/static/vkui_logo.png" alt="logo" width="120" />
+<img src="https://sqlite.org/images/sqlite370_banner.gif" alt="logo" width="120" />
 <br>
 
 ## Install
@@ -13,12 +15,10 @@
 Clone the repo and install dependencies:
 
 ```bash
-git clone --depth 1 --branch main https://github.com/electron-react-boilerplate/electron-react-boilerplate.git your-project-name
+git clone --depth 1 --branch main https://github.com/2dva/electrodemo.git your-project-name
 cd your-project-name
 npm install
 ```
-
-**Having issues installing? See our [debugging guide](https://github.com/electron-react-boilerplate/electron-react-boilerplate/issues/400)**
 
 ## Starting Development
 
@@ -35,18 +35,3 @@ To package apps for the local platform:
 ```bash
 npm run package
 ```
-
-## Docs
-
-See our [docs and guides here](https://electron-react-boilerplate.js.org/docs/installation)
-
-## License
-
-MIT © [Electron React Boilerplate](https://github.com/electron-react-boilerplate)
-
-[github-actions-status]: https://github.com/electron-react-boilerplate/electron-react-boilerplate/workflows/Test/badge.svg
-[github-actions-url]: https://github.com/electron-react-boilerplate/electron-react-boilerplate/actions
-[github-tag-image]: https://img.shields.io/github/tag/electron-react-boilerplate/electron-react-boilerplate.svg?label=version
-[github-tag-url]: https://github.com/electron-react-boilerplate/electron-react-boilerplate/releases/latest
-[stackoverflow-img]: https://img.shields.io/badge/stackoverflow-electron_react_boilerplate-blue.svg
-[stackoverflow-url]: https://stackoverflow.com/questions/tagged/electron-react-boilerplate
