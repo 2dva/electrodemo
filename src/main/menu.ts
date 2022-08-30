@@ -1,18 +1,7 @@
-import {
-  app,
-  Menu,
-  shell,
-  BrowserWindow,
-  MenuItemConstructorOptions,
-} from 'electron';
+import { app, Menu, shell, BrowserWindow, MenuItemConstructorOptions } from 'electron';
 import { existsSync, readFile } from 'fs-extra';
 import path from 'path';
-import {
-  Channels,
-  COMMAND_DB_OPEN,
-  COMMAND_DB_TOOLS,
-  COMMAND_INFO,
-} from './constants';
+import { Channels, COMMAND_DB_OPEN, COMMAND_DB_TOOLS, COMMAND_INFO } from './constants';
 
 interface DarwinMenuItemConstructorOptions extends MenuItemConstructorOptions {
   selector?: string;
@@ -27,25 +16,15 @@ export default class MenuBuilder {
   }
 
   sendCommandToRender(command: string, data: object | null = null) {
-    this.mainWindow.webContents.send(
-      Channels.IPC_COMMAND_CHANNEL,
-      command,
-      data
-    );
+    this.mainWindow.webContents.send(Channels.IPC_COMMAND_CHANNEL, command, data);
   }
 
   buildMenu(): Menu {
-    if (
-      process.env.NODE_ENV === 'development' ||
-      process.env.DEBUG_PROD === 'true'
-    ) {
+    if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
       this.setupDevelopmentEnvironment();
     }
 
-    const template =
-      process.platform === 'darwin'
-        ? this.buildDarwinTemplate()
-        : this.buildDefaultTemplate();
+    const template = process.platform === 'darwin' ? this.buildDarwinTemplate() : this.buildDefaultTemplate();
 
     const menu = Menu.buildFromTemplate(template);
     Menu.setApplicationMenu(menu);
@@ -143,9 +122,7 @@ export default class MenuBuilder {
             if (existsSync(fileName)) {
               readFile(fileName, 'utf-8', (err, data) => {
                 if (err) {
-                  console.log(
-                    `An error ocurred reading the file :${err.message}`
-                  );
+                  console.log(`An error ocurred reading the file :${err.message}`);
                   return;
                 }
                 this.sendCommandToRender(COMMAND_INFO, { data });
@@ -221,9 +198,7 @@ export default class MenuBuilder {
         {
           label: 'Documentation',
           click() {
-            shell.openExternal(
-              'https://github.com/electron/electron/tree/main/docs#readme'
-            );
+            shell.openExternal('https://github.com/electron/electron/tree/main/docs#readme');
           },
         },
         {
@@ -242,10 +217,7 @@ export default class MenuBuilder {
     };
 
     const subMenuView =
-      process.env.NODE_ENV === 'development' ||
-      process.env.DEBUG_PROD === 'true'
-        ? subMenuViewDev
-        : subMenuViewProd;
+      process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true' ? subMenuViewDev : subMenuViewProd;
 
     return [subMenuAbout, subMenuDatabase, subMenuView, subMenuWindow];
   }
@@ -271,8 +243,7 @@ export default class MenuBuilder {
       {
         label: '&View',
         submenu:
-          process.env.NODE_ENV === 'development' ||
-          process.env.DEBUG_PROD === 'true'
+          process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true'
             ? [
                 {
                   label: '&Reload',
@@ -285,9 +256,7 @@ export default class MenuBuilder {
                   label: 'Toggle &Full Screen',
                   accelerator: 'F11',
                   click: () => {
-                    this.mainWindow.setFullScreen(
-                      !this.mainWindow.isFullScreen()
-                    );
+                    this.mainWindow.setFullScreen(!this.mainWindow.isFullScreen());
                   },
                 },
                 {
@@ -303,9 +272,7 @@ export default class MenuBuilder {
                   label: 'Toggle &Full Screen',
                   accelerator: 'F11',
                   click: () => {
-                    this.mainWindow.setFullScreen(
-                      !this.mainWindow.isFullScreen()
-                    );
+                    this.mainWindow.setFullScreen(!this.mainWindow.isFullScreen());
                   },
                 },
               ],

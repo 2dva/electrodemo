@@ -1,9 +1,4 @@
-import {
-  AdaptivityProvider,
-  AppRoot,
-  ConfigProvider,
-  SizeType,
-} from '@vkontakte/vkui';
+import { AdaptivityProvider, AppRoot, ConfigProvider, SizeType } from '@vkontakte/vkui';
 import '@vkontakte/vkui/dist/vkui.css';
 import { MainLayout } from './components/MainLayout';
 

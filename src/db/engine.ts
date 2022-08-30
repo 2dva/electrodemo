@@ -55,10 +55,7 @@ export const getQuery = (query: string): Promise<Array<unknown>> => {
   });
 };
 
-export const execQuery = (
-  query: string,
-  params: Array<unknown>
-): Promise<boolean> => {
+export const execQuery = (query: string, params: Array<unknown>): Promise<boolean> => {
   return new Promise((resolve, reject) => {
     const stmt = engine.prepare(query);
     stmt.run(params, (err: unknown) => {

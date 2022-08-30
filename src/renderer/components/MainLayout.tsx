@@ -1,11 +1,5 @@
 import { observer } from 'mobx-react';
-import {
-  ModalPage,
-  ModalPageHeader,
-  ModalRoot,
-  SplitCol,
-  SplitLayout,
-} from '@vkontakte/vkui';
+import { ModalPage, ModalPageHeader, ModalRoot, SplitCol, SplitLayout } from '@vkontakte/vkui';
 import { modalStore } from '../stores/modalStore';
 import { MODAL_PAGE_OPEN_DB } from '../constants';
 import { ModalGroupOpenDB } from './modals';

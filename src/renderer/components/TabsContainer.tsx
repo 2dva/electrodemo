@@ -31,28 +31,16 @@ export const TabsContainer = () => {
     <Group style={{ height: '100%' }}>
       <Tabs mode="default">
         <HorizontalScroll arrowSize="m">
-          <TabsItem
-            selected={selected === 'recs'}
-            onClick={() => openRecsTab()}
-          >
+          <TabsItem selected={selected === 'recs'} onClick={() => openRecsTab()}>
             Recs
           </TabsItem>
-          <TabsItem
-            selected={selected === 'demo'}
-            onClick={() => setSelected('demo')}
-          >
+          <TabsItem selected={selected === 'demo'} onClick={() => setSelected('demo')}>
             Demo
           </TabsItem>
-          <TabsItem
-            selected={selected === 'calendar'}
-            onClick={() => setSelected('calendar')}
-          >
+          <TabsItem selected={selected === 'calendar'} onClick={() => setSelected('calendar')}>
             Calendar
           </TabsItem>
-          <TabsItem
-            selected={selected === 'settings'}
-            onClick={() => setSelected('settings')}
-          >
+          <TabsItem selected={selected === 'settings'} onClick={() => setSelected('settings')}>
             Settings
           </TabsItem>
         </HorizontalScroll>

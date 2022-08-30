@@ -12,12 +12,9 @@ const Api: IAPI = {
 };
 
 export const initApi = () => {
-  ipcMain.handle(
-    Channels.IPC_FUNCTION_CHANNEL,
-    async (_event, [functionName, params]) => {
-      console.log('Api:functionName:', functionName);
-      const apiFunction: IApiFunction = Api[functionName];
-      return (apiFunction && apiFunction(params)) || Promise.reject();
-    }
-  );
+  ipcMain.handle(Channels.IPC_FUNCTION_CHANNEL, async (_event, [functionName, params]) => {
+    console.log('Api:functionName:', functionName);
+    const apiFunction: IApiFunction = Api[functionName];
+    return (apiFunction && apiFunction(params)) || Promise.reject();
+  });
 };

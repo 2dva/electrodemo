@@ -9,9 +9,7 @@ export const PanelSettings = observer(({ id }: IPanelProps) => {
     <Panel id={id}>
       <Group>
         <FormItem>
-          <Button onClick={() => modalStore.openModal(MODAL_PAGE_OPEN_DB)}>
-            Open Database
-          </Button>
+          <Button onClick={() => modalStore.openModal(MODAL_PAGE_OPEN_DB)}>Open Database</Button>
         </FormItem>
         <Caption>{dbStore.info.fileName}</Caption>
         <Text>{dbStore.info.systemInfo}</Text>

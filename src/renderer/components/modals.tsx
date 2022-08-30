@@ -1,12 +1,5 @@
 import { useRef } from 'react';
-import {
-  Button,
-  ButtonGroup,
-  Checkbox,
-  FormItem,
-  Group,
-  Input,
-} from '@vkontakte/vkui';
+import { Button, ButtonGroup, Checkbox, FormItem, Group, Input } from '@vkontakte/vkui';
 import { dbStore } from '../stores/dbStore';
 import { modalStore } from '../stores/modalStore';
 
