@@ -1,14 +1,19 @@
 import { makeAutoObservable } from 'mobx';
+import { IFileInfo } from '../../main/constants';
 
 interface DBInfo {
-  fileName: string | null;
+  connected: boolean;
+  fileName: string;
+  fileSize: number;
   systemInfo: string | null;
   shouldCreate: boolean;
 }
 
 export class DBStore {
   info: DBInfo = {
-    fileName: null,
+    connected: false,
+    fileName: '',
+    fileSize: 0,
     systemInfo: null,
     shouldCreate: false,
   };
@@ -20,6 +25,12 @@ export class DBStore {
   openDB = (fileName: string, shouldCreate = false) => {
     this.info.fileName = fileName;
     this.info.shouldCreate = shouldCreate;
+  };
+
+  setFileInfo = (info: IFileInfo) => {
+    this.info.connected = info.connected;
+    this.info.fileName = info.fileName || '';
+    this.info.fileSize = info.fileSize || 0;
   };
 
   setInfo = (info: string) => {

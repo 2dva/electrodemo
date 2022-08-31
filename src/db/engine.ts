@@ -1,6 +1,7 @@
-import { existsSync } from 'fs-extra';
+import { existsSync, statSync } from 'fs-extra';
+import { ipcMain } from 'electron';
 import { Sqlite3Wrapper } from './Sqlite3Wrapper';
-import { IEngineWrapper } from '../main/constants';
+import { Commands, EVENT_COMMAND_SEND, IEngineWrapper } from '../main/constants';
 
 let engine: IEngineWrapper;
 
@@ -37,6 +38,11 @@ export const openFileDatabase = (fileName: string): Promise<boolean> => {
     if (!engine) {
       return reject(new Error('Cant create DB Engine'));
     }
+
+    const stats = statSync(fileName);
+    // Send info to client
+    ipcMain.emit(EVENT_COMMAND_SEND, Commands.COMMAND_DB_INFO, { connected: true, fileName, fileSize: stats.size });
+
     return resolve(true);
   });
 };

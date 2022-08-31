@@ -1,7 +1,7 @@
-import { app, Menu, shell, BrowserWindow, MenuItemConstructorOptions } from 'electron';
+import { app, Menu, shell, BrowserWindow, MenuItemConstructorOptions, ipcMain } from 'electron';
 import { existsSync, readFile } from 'fs-extra';
 import path from 'path';
-import { Channels, COMMAND_DB_OPEN, COMMAND_DB_TOOLS, COMMAND_INFO } from './constants';
+import { Commands, EVENT_COMMAND_SEND } from './constants';
 
 interface DarwinMenuItemConstructorOptions extends MenuItemConstructorOptions {
   selector?: string;
@@ -15,9 +15,9 @@ export default class MenuBuilder {
     this.mainWindow = mainWindow;
   }
 
-  sendCommandToRender(command: string, data: object | null = null) {
-    this.mainWindow.webContents.send(Channels.IPC_COMMAND_CHANNEL, command, data);
-  }
+  sendCommandToRender = (command: Commands, data: object | null = null) => {
+    ipcMain.emit(EVENT_COMMAND_SEND, command, data);
+  };
 
   buildMenu(): Menu {
     if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
@@ -102,14 +102,14 @@ export default class MenuBuilder {
           label: 'Open Database...',
           accelerator: 'Command+O',
           click: () => {
-            this.sendCommandToRender(COMMAND_DB_OPEN);
+            this.sendCommandToRender(Commands.COMMAND_DB_OPEN);
           },
         },
         {
           label: 'Tools...',
           accelerator: 'Shift+Command+T',
           click: () => {
-            this.sendCommandToRender(COMMAND_DB_TOOLS);
+            this.sendCommandToRender(Commands.COMMAND_DB_TOOLS);
           },
         },
         { type: 'separator' },
@@ -125,7 +125,7 @@ export default class MenuBuilder {
                   console.log(`An error ocurred reading the file :${err.message}`);
                   return;
                 }
-                this.sendCommandToRender(COMMAND_INFO, { data });
+                this.sendCommandToRender(Commands.COMMAND_INFO, { data });
               });
             }
 

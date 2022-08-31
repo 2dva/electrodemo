@@ -28,7 +28,6 @@ class AppUpdater {
 
 let mainWindow: BrowserWindow | null = null;
 
-initApi();
 ipcMain.handle(Channels.IPC_EXAMPLE_CHANNEL, (_event, arg) => {
   const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
   console.log(msgTemplate(arg));
@@ -105,6 +104,7 @@ const createWindow = async () => {
     },
   });
 
+  initApi(mainWindow);
   mainWindow.loadURL(resolveHtmlPath('index.html'));
 
   mainWindow.on('ready-to-show', () => {

@@ -2,7 +2,7 @@ import { createRoot } from 'react-dom/client';
 import { autorun } from 'mobx';
 import App from './App';
 import { modalStore } from './stores/modalStore';
-import { Channels, COMMAND_DB_OPEN, COMMAND_INFO } from '../main/constants';
+import { Channels, Commands, IFileInfo } from '../main/constants';
 import { MODAL_PAGE_OPEN_DB } from './constants';
 import { dbStore } from './stores/dbStore';
 import { setRenderer } from './simpleBridge';
@@ -23,10 +23,13 @@ ipcr.on(Channels.IPC_COMMAND_CHANNEL, (...args) => {
   const [command, data] = args;
   console.log('COMMAND:', command, data);
   switch (command) {
-    case COMMAND_DB_OPEN:
+    case Commands.COMMAND_DB_OPEN:
       modalStore.openModal(MODAL_PAGE_OPEN_DB);
       break;
-    case COMMAND_INFO:
+    case Commands.COMMAND_DB_INFO:
+      dbStore.setFileInfo(data as IFileInfo);
+      break;
+    case Commands.COMMAND_INFO:
       if (data && typeof data === 'string') {
         dbStore.setInfo(data);
       } else if (data && typeof data === 'object') {
