@@ -9,6 +9,10 @@ interface DBInfo {
   shouldCreate: boolean;
 }
 
+interface ISettings {
+  dark: boolean;
+}
+
 export class DBStore {
   info: DBInfo = {
     connected: false,
@@ -16,6 +20,10 @@ export class DBStore {
     fileSize: 0,
     systemInfo: null,
     shouldCreate: false,
+  };
+
+  settings: ISettings = {
+    dark: false,
   };
 
   constructor() {
@@ -35,6 +43,11 @@ export class DBStore {
 
   setInfo = (info: string) => {
     this.info.systemInfo = info;
+  };
+
+  switchTheme = () => {
+    this.settings.dark = !this.settings.dark;
+    console.log('switchTHeme=', this.settings.dark);
   };
 }
 

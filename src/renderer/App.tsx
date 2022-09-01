@@ -1,10 +1,12 @@
 import { AdaptivityProvider, AppRoot, ConfigProvider, SizeType } from '@vkontakte/vkui';
 import '@vkontakte/vkui/dist/vkui.css';
+import { observer } from 'mobx-react';
 import { MainLayout } from './components/MainLayout';
+import { dbStore } from './stores/dbStore';
 
-const App = () => {
+const App = observer(() => {
   return (
-    <ConfigProvider>
+    <ConfigProvider appearance={dbStore.settings.dark ? 'dark' : 'light'}>
       <AdaptivityProvider sizeX={SizeType.REGULAR} sizeY={SizeType.REGULAR}>
         <AppRoot>
           <MainLayout />
@@ -12,6 +14,6 @@ const App = () => {
       </AdaptivityProvider>
     </ConfigProvider>
   );
-};
+});
 
 export default App;

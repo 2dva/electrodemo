@@ -1,4 +1,15 @@
-import { Button, ContentCard, FormItem, Group, Panel, Text } from '@vkontakte/vkui';
+import {
+  Button,
+  ContentCard,
+  FormItem,
+  Group,
+  Header,
+  Panel,
+  SimpleCell,
+  SizeType,
+  Switch,
+  Text,
+} from '@vkontakte/vkui';
 import { observer } from 'mobx-react';
 import { IPanelProps, MODAL_PAGE_OPEN_DB } from '../constants';
 import { modalStore } from '../stores/modalStore';
@@ -23,6 +34,17 @@ export const PanelSettings = observer(({ id }: IPanelProps) => {
           {!dbStore.info.connected && <ContentCard subtitle="Status: disconnected" mode="tint" />}
         </FormItem>
         <Text>{dbStore.info.systemInfo}</Text>
+      </Group>
+      <Group header={<Header mode="secondary">Appearance</Header>}>
+        <FormItem>
+          <SimpleCell
+            sizeY={SizeType.COMPACT}
+            Component="label"
+            after={<Switch defaultChecked={dbStore.settings.dark} onChange={dbStore.switchTheme} />}
+          >
+            Dark theme
+          </SimpleCell>
+        </FormItem>
       </Group>
     </Panel>
   );
