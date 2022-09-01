@@ -28,6 +28,9 @@ export class DBStore {
 
   constructor() {
     makeAutoObservable(this);
+    if (localStorage.getItem('settingDark') === '1') {
+      this.settings.dark = true;
+    }
   }
 
   openDB = (fileName: string, shouldCreate = false) => {
@@ -47,6 +50,7 @@ export class DBStore {
 
   switchTheme = () => {
     this.settings.dark = !this.settings.dark;
+    localStorage.setItem('settingDark', `${+this.settings.dark}`);
     console.log('switchTHeme=', this.settings.dark);
   };
 }
