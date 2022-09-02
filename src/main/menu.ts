@@ -123,14 +123,11 @@ export default class MenuBuilder {
               readFile(fileName, 'utf-8', (err, data) => {
                 if (err) {
                   console.log(`An error ocurred reading the file :${err.message}`);
-                  return;
+                } else {
+                  console.log(`Success in reading file: ${data}`);
                 }
-                this.sendCommandToRender(Commands.COMMAND_INFO, { data });
               });
             }
-
-            // // const data = { wtf: 123 };
-            // this.sendCommandToRender(COMMAND_INFO, data);
           },
         },
       ],

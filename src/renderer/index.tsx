@@ -4,7 +4,7 @@ import App from './App';
 import { modalStore } from './stores/modalStore';
 import { Channels, Commands, IFileInfo } from '../main/constants';
 import { MODAL_PAGE_OPEN_DB } from './constants';
-import { dbStore } from './stores/dbStore';
+import { appStore } from './stores/appStore';
 import { setRenderer } from './simpleBridge';
 
 const container = document.getElementById('root')!;
@@ -27,14 +27,7 @@ ipcr.on(Channels.IPC_COMMAND_CHANNEL, (...args) => {
       modalStore.openModal(MODAL_PAGE_OPEN_DB);
       break;
     case Commands.COMMAND_DB_INFO:
-      dbStore.setFileInfo(data as IFileInfo);
-      break;
-    case Commands.COMMAND_INFO:
-      if (data && typeof data === 'string') {
-        dbStore.setInfo(data);
-      } else if (data && typeof data === 'object') {
-        dbStore.setInfo(JSON.stringify(data));
-      }
+      appStore.setFileInfo(data as IFileInfo);
       break;
     default:
   }
@@ -50,5 +43,5 @@ ipcr
 ipcr.sendMessage(Channels.IPC_EVENT_CHANNEL, ['ready']);
 
 autorun(() => {
-  console.log('index:dbStore.file=', dbStore.info.fileName);
+  console.log('index:dbStore.file=', appStore.dbinfo.fileName);
 });

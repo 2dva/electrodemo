@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { Button, ButtonGroup, Checkbox, FormItem, Group, Input } from '@vkontakte/vkui';
-import { dbStore } from '../stores/dbStore';
+import { appStore } from '../stores/appStore';
 import { modalStore } from '../stores/modalStore';
 
 export const ModalGroupOpenDB = () => {
@@ -8,7 +8,7 @@ export const ModalGroupOpenDB = () => {
 
   const clickOkHandler = () => {
     // @ts-ignore
-    dbStore.openDB(textInput.current.value);
+    appStore.openDB(textInput.current.value);
     modalStore.closeModal();
   };
 

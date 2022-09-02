@@ -9,7 +9,6 @@ export enum Commands {
   COMMAND_DB_OPEN = 'COMMAND_DB_OPEN',
   COMMAND_DB_TOOLS = 'COMMAND_DB_TOOLS',
   COMMAND_DB_INFO = 'COMMAND_DB_INFO',
-  COMMAND_INFO = 'COMMAND_INFO',
 }
 
 export const EVENT_COMMAND_SEND = 'sendToRenderer';

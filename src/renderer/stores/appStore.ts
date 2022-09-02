@@ -5,7 +5,6 @@ interface DBInfo {
   connected: boolean;
   fileName: string;
   fileSize: number;
-  systemInfo: string | null;
   shouldCreate: boolean;
 }
 
@@ -13,12 +12,11 @@ interface ISettings {
   dark: boolean;
 }
 
-export class DBStore {
-  info: DBInfo = {
+class AppStore {
+  dbinfo: DBInfo = {
     connected: false,
     fileName: '',
     fileSize: 0,
-    systemInfo: null,
     shouldCreate: false,
   };
 
@@ -34,18 +32,14 @@ export class DBStore {
   }
 
   openDB = (fileName: string, shouldCreate = false) => {
-    this.info.fileName = fileName;
-    this.info.shouldCreate = shouldCreate;
+    this.dbinfo.fileName = fileName;
+    this.dbinfo.shouldCreate = shouldCreate;
   };
 
   setFileInfo = (info: IFileInfo) => {
-    this.info.connected = info.connected;
-    this.info.fileName = info.fileName || '';
-    this.info.fileSize = info.fileSize || 0;
-  };
-
-  setInfo = (info: string) => {
-    this.info.systemInfo = info;
+    this.dbinfo.connected = info.connected;
+    this.dbinfo.fileName = info.fileName || '';
+    this.dbinfo.fileSize = info.fileSize || 0;
   };
 
   switchTheme = () => {
@@ -55,4 +49,4 @@ export class DBStore {
   };
 }
 
-export const dbStore = new DBStore();
+export const appStore = new AppStore();

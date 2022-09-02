@@ -3,7 +3,7 @@ import DataGrid from 'react-data-grid';
 import { observer } from 'mobx-react';
 import { IPanelProps } from '../constants';
 import { recStore } from '../stores/recStore';
-import { dbStore } from '../stores/dbStore';
+import { appStore } from '../stores/appStore';
 
 const columns = [
   { key: 'rec_id', name: 'Id', width: 30 },
@@ -18,7 +18,7 @@ export const PanelRecs = observer(({ id }: IPanelProps) => {
   return (
     <Panel id={id}>
       <Group>
-        <DataGrid columns={columns} rows={recStore.rows} className={dbStore.settings.dark ? dgDarkClassName : ''} />
+        <DataGrid columns={columns} rows={recStore.rows} className={appStore.settings.dark ? dgDarkClassName : ''} />
       </Group>
     </Panel>
   );

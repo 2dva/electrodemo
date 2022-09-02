@@ -16,7 +16,7 @@ import { observer } from 'mobx-react';
 import { useState } from 'react';
 import { IPanelProps, MODAL_PAGE_OPEN_DB } from '../constants';
 import { modalStore } from '../stores/modalStore';
-import { dbStore } from '../stores/dbStore';
+import { appStore } from '../stores/appStore';
 import { insertRecTestRows } from '../stores/recStore';
 
 const countOptions = [
@@ -39,19 +39,23 @@ export const PanelSettings = observer(({ id }: IPanelProps) => {
           <Button onClick={() => modalStore.openModal(MODAL_PAGE_OPEN_DB)}>Open Database</Button>
         </FormItem>
         <FormItem>
-          {dbStore.info.connected && (
+          {appStore.dbinfo.connected && (
             <ContentCard
               subtitle="Status: connected"
-              header={dbStore.info.fileName}
-              caption={`${Math.round(dbStore.info.fileSize / 1024)} Kb`}
+              header={appStore.dbinfo.fileName}
+              caption={`${Math.round(appStore.dbinfo.fileSize / 1024)} Kb`}
               mode="tint"
             />
           )}
-          {!dbStore.info.connected && <ContentCard subtitle="Status: disconnected" mode="tint" />}
+          {!appStore.dbinfo.connected && <ContentCard subtitle="Status: disconnected" mode="tint" />}
         </FormItem>
-        <FormLayoutGroup mode="horizontal" style={{ width: '296px' }}>
-          <FormItem style={{ flexBasis: '150px', flexGrow: 0 }}>
-            <Button style={{ height: '34px' }} onClick={() => insertTestRecords()} disabled={!dbStore.info.connected}>
+        <FormLayoutGroup mode="horizontal" style={{ width: '302px' }}>
+          <FormItem style={{ flexBasis: '156px', flexGrow: 1 }}>
+            <Button
+              style={{ height: '34px' }}
+              onClick={() => insertTestRecords()}
+              disabled={!appStore.dbinfo.connected}
+            >
               Add N test records
             </Button>
           </FormItem>
@@ -70,14 +74,13 @@ export const PanelSettings = observer(({ id }: IPanelProps) => {
             />
           </FormItem>
         </FormLayoutGroup>
-        <Text>{dbStore.info.systemInfo}</Text>
       </Group>
       <Group header={<Header mode="secondary">Appearance</Header>}>
         <FormItem>
           <SimpleCell
             sizeY={SizeType.COMPACT}
             Component="label"
-            after={<Switch defaultChecked={dbStore.settings.dark} onChange={dbStore.switchTheme} />}
+            after={<Switch defaultChecked={appStore.settings.dark} onChange={appStore.switchTheme} />}
           >
             Dark theme
           </SimpleCell>
