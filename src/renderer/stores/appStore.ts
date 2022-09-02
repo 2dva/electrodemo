@@ -1,5 +1,5 @@
 import { makeAutoObservable } from 'mobx';
-import { IFileInfo } from '../../main/constants';
+import { IFileInfo } from '../../commonConstants';
 
 interface DBInfo {
   connected: boolean;

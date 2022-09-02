@@ -1,5 +1,5 @@
-import { Channels } from '../main/constants';
 import { IExposedRenderer } from './preload';
+import { Channels } from '../commonConstants';
 
 let ipcRenderer: IExposedRenderer;
 

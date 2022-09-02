@@ -1,7 +1,8 @@
 import { existsSync, statSync } from 'fs-extra';
 import { ipcMain } from 'electron';
-import { Sqlite3Wrapper } from './Sqlite3Wrapper';
-import { Commands, EVENT_COMMAND_SEND, IEngineWrapper, IStatement } from '../main/constants';
+import { IEngineWrapper, IStatement, Sqlite3Wrapper } from './Sqlite3Wrapper';
+import { EVENT_COMMAND_SEND } from '../main/constants';
+import { Commands } from '../commonConstants';
 
 let engine: IEngineWrapper;
 
@@ -14,7 +15,7 @@ export enum Engines {
   DB_ENGINE_BETTER_SQLITE3 = 'better-sqlite3',
 }
 
-const getEngine = (engineType: Engines = Engines.DB_ENGINE_SQLITE3) => {
+const getEngineClass = (engineType: Engines = Engines.DB_ENGINE_SQLITE3) => {
   switch (engineType) {
     case Engines.DB_ENGINE_KNEX:
       // not implemented
@@ -34,7 +35,7 @@ export const openFileDatabase = (fileName: string): Promise<boolean> => {
       return reject(new Error(`Couldnt open file ${fileName}`));
     }
 
-    engine = new (getEngine())(fileName);
+    engine = new (getEngineClass())(fileName);
     if (!engine) {
       return reject(new Error('Cant create DB Engine'));
     }

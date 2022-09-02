@@ -1,7 +1,8 @@
 import { app, Menu, shell, BrowserWindow, MenuItemConstructorOptions, ipcMain } from 'electron';
 import { existsSync, readFile } from 'fs-extra';
 import path from 'path';
-import { Commands, EVENT_COMMAND_SEND } from './constants';
+import { EVENT_COMMAND_SEND } from './constants';
+import { Commands } from '../commonConstants';
 
 interface DarwinMenuItemConstructorOptions extends MenuItemConstructorOptions {
   selector?: string;

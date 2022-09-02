@@ -1,4 +1,4 @@
-import { Channels } from '../main/constants';
+import { Channels } from '../commonConstants';
 
 export interface IExposedRenderer {
   sendMessage(channel: Channels, args: unknown[]): void;

@@ -2,10 +2,10 @@ import { createRoot } from 'react-dom/client';
 import { autorun } from 'mobx';
 import App from './App';
 import { modalStore } from './stores/modalStore';
-import { Channels, Commands, IFileInfo } from '../main/constants';
 import { MODAL_PAGE_OPEN_DB } from './constants';
 import { appStore } from './stores/appStore';
 import { setRenderer } from './simpleBridge';
+import { Channels, Commands, IFileInfo } from '../commonConstants';
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);

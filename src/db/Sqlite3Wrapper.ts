@@ -1,5 +1,4 @@
 import sqlite, { Database } from 'sqlite3';
-import { IEngineWrapper, IStatement } from '../main/constants';
 
 const createDatabase = (filename: string) => {
   const sqlite3 = sqlite.verbose();
@@ -11,6 +10,15 @@ const createDatabase = (filename: string) => {
     }
   });
 };
+
+export interface IStatement {
+  run(params: Array<unknown>, cb?: (err: unknown) => void): void;
+}
+
+export interface IEngineWrapper {
+  all(query: string, cb: (err: unknown, rows: unknown[]) => void): void;
+  prepare(query: string): IStatement;
+}
 
 export class Sqlite3Wrapper implements IEngineWrapper {
   database: Database;

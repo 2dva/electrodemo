@@ -14,9 +14,10 @@ import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
-import { Channels } from './constants';
 import { openDB } from '../db/manager';
-import { initApi } from './api';
+import { initApi } from './Api';
+import { Channels } from '../commonConstants';
+import { EVENT_COMMAND_SEND } from './constants';
 
 class AppUpdater {
   constructor() {
@@ -104,7 +105,6 @@ const createWindow = async () => {
     },
   });
 
-  initApi(mainWindow);
   mainWindow.loadURL(resolveHtmlPath('index.html'));
 
   mainWindow.on('ready-to-show', () => {
@@ -134,6 +134,13 @@ const createWindow = async () => {
   // Remove this if your app does not use auto updates
   // eslint-disable-next-line
   new AppUpdater();
+
+  initApi();
+
+  ipcMain.addListener(EVENT_COMMAND_SEND, (command: string, data: object | null = null) => {
+    console.log('main:EVENT_COMMAND_SEND:', command);
+    mainWindow?.webContents.send(Channels.IPC_COMMAND_CHANNEL, command, data);
+  });
 };
 
 /**
