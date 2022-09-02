@@ -1,13 +1,17 @@
 import { BrowserWindow, ipcMain } from 'electron';
 import { Channels, EVENT_COMMAND_SEND } from './constants';
-import { dbFetchRecRows } from '../db/manager';
+import { dbFetchRecRows, dbInsertRecTestRows } from '../db/manager';
 
-type IApiFunction = (params: unknown) => unknown;
+type IApiFunction = (params: Record<string, unknown>) => unknown;
 type IAPI = Record<string, IApiFunction>;
 
 const Api: IAPI = {
   fetchRecRows: () => {
     return dbFetchRecRows();
+  },
+
+  insertRecTestRows: ({ n }) => {
+    return dbInsertRecTestRows(Number(n));
   },
 };
 

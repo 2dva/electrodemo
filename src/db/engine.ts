@@ -1,7 +1,7 @@
 import { existsSync, statSync } from 'fs-extra';
 import { ipcMain } from 'electron';
 import { Sqlite3Wrapper } from './Sqlite3Wrapper';
-import { Commands, EVENT_COMMAND_SEND, IEngineWrapper } from '../main/constants';
+import { Commands, EVENT_COMMAND_SEND, IEngineWrapper, IStatement } from '../main/constants';
 
 let engine: IEngineWrapper;
 
@@ -58,6 +58,13 @@ export const getQuery = (query: string): Promise<Array<unknown>> => {
         resolve(rows);
       }
     });
+  });
+};
+
+export const prepareQuery = (query: string): Promise<IStatement> => {
+  return new Promise((resolve) => {
+    const stmt = engine.prepare(query);
+    resolve(stmt);
   });
 };
 

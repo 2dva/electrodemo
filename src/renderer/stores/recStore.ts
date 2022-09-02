@@ -22,3 +22,7 @@ export const fetchRecRows = () => {
     })
     .catch(() => {});
 };
+
+export const insertRecTestRows = (n: number) => {
+  executeRemoteFunction('insertRecTestRows', { n }).catch(() => {});
+};

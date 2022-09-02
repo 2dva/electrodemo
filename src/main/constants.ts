@@ -15,7 +15,7 @@ export enum Commands {
 export const EVENT_COMMAND_SEND = 'sendToRenderer';
 
 export interface IStatement {
-  run(params: Array<unknown>, cb: (err: unknown) => void): void;
+  run(params: Array<unknown>, cb?: (err: unknown) => void): void;
 }
 
 export interface IEngineWrapper {
