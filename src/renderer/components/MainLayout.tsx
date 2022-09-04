@@ -11,7 +11,7 @@ export const MainLayout = observer(() => {
       <ModalPage
         id={MODAL_PAGE_OPEN_DB}
         onClose={() => modalStore.closeModal()}
-        header={<ModalPageHeader>Открыть файл БД</ModalPageHeader>}
+        header={<ModalPageHeader>Open DB File</ModalPageHeader>}
       >
         <ModalGroupOpenDB />
       </ModalPage>

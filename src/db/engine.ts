@@ -4,7 +4,7 @@ import { IEngineWrapper, IStatement, Sqlite3Wrapper } from './Sqlite3Wrapper';
 import { EVENT_COMMAND_SEND } from '../main/constants';
 import { Commands } from '../commonConstants';
 
-let engine: IEngineWrapper;
+let engine: IEngineWrapper | undefined;
 
 export enum Engines {
   // https://www.npmjs.com/package/knex
@@ -29,6 +29,14 @@ const getEngineClass = (engineType: Engines = Engines.DB_ENGINE_SQLITE3) => {
   return Sqlite3Wrapper;
 };
 
+export const closeFileDatabase = () => {
+  engine = undefined;
+
+  // Send info to client
+  ipcMain.emit(EVENT_COMMAND_SEND, Commands.COMMAND_DB_INFO, { connected: false });
+  return true;
+};
+
 export const openFileDatabase = (fileName: string): Promise<boolean> => {
   return new Promise((resolve, reject) => {
     if (!existsSync(fileName)) {
@@ -50,7 +58,7 @@ export const openFileDatabase = (fileName: string): Promise<boolean> => {
 
 export const getQuery = (query: string): Promise<Array<unknown>> => {
   return new Promise((resolve, reject) => {
-    engine.all(query, (err: unknown, rows: unknown[]) => {
+    engine?.all(query, (err: unknown, rows: unknown[]) => {
       if (err) {
         console.log(`getQuery: query error`, err);
         reject(err);
@@ -62,17 +70,17 @@ export const getQuery = (query: string): Promise<Array<unknown>> => {
   });
 };
 
-export const prepareQuery = (query: string): Promise<IStatement> => {
+export const prepareQuery = (query: string): Promise<IStatement | undefined> => {
   return new Promise((resolve) => {
-    const stmt = engine.prepare(query);
+    const stmt = engine?.prepare(query);
     resolve(stmt);
   });
 };
 
 export const execQuery = (query: string, params: Array<unknown>): Promise<boolean> => {
   return new Promise((resolve, reject) => {
-    const stmt = engine.prepare(query);
-    stmt.run(params, (err: unknown) => {
+    const stmt = engine?.prepare(query);
+    stmt?.run(params, (err: unknown) => {
       if (err) {
         console.log(`execQuery: query error ${err}`);
         reject(err);

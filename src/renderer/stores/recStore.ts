@@ -15,6 +15,10 @@ export class RecStore {
 
 export const recStore = new RecStore();
 
+export const disconnectRec = () => {
+  recStore.setRows([]);
+};
+
 export const fetchRecRows = () => {
   executeRemoteFunction('fetchRecRows', {})
     .then((result) => {

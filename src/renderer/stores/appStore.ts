@@ -1,5 +1,6 @@
 import { makeAutoObservable } from 'mobx';
 import { IFileInfo } from '../../commonConstants';
+import { executeRemoteFunction } from '../simpleBridge';
 
 interface DBInfo {
   connected: boolean;
@@ -31,9 +32,10 @@ class AppStore {
     }
   }
 
-  openDB = (fileName: string, shouldCreate = false) => {
-    this.dbinfo.fileName = fileName;
+  openDB = (filePath: string, shouldCreate = false) => {
+    this.dbinfo.fileName = filePath;
     this.dbinfo.shouldCreate = shouldCreate;
+    return executeRemoteFunction('openDB', { filePath });
   };
 
   setFileInfo = (info: IFileInfo) => {

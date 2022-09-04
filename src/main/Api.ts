@@ -1,17 +1,25 @@
 import { ipcMain } from 'electron';
-import { dbFetchRecRows, dbInsertRecTestRows } from '../db/manager';
+import { closeDB, dbFetchRecRows, dbInsertRecTestRows, openDBFile } from '../db/manager';
 import { Channels } from '../commonConstants';
 
 type IApiFunction = (params: Record<string, unknown>) => unknown;
 type IAPI = Record<string, IApiFunction>;
 
 const Api: IAPI = {
+  openDB: ({ filePath }) => {
+    return openDBFile(filePath as string);
+  },
+
+  closeDB: () => {
+    return closeDB();
+  },
+
   fetchRecRows: () => {
     return dbFetchRecRows();
   },
 
   insertRecTestRows: ({ n }) => {
-    return dbInsertRecTestRows(Number(n));
+    return dbInsertRecTestRows(n as number);
   },
 };
 

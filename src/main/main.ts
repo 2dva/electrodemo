@@ -14,7 +14,6 @@ import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
-import { openDB } from '../db/manager';
 import { initApi } from './Api';
 import { Channels } from '../commonConstants';
 import { EVENT_COMMAND_SEND } from './constants';
@@ -48,10 +47,7 @@ ipcMain.on(Channels.IPC_EVENT_CHANNEL, async (_event, arg) => {
   switch (stringEvent) {
     case 'ready':
       console.log('IPC:ReadyEvent');
-      openDB().catch((err) => {
-        console.log(`Async Database open error`, err);
-      });
-      // checkDBExamples();
+      // openDBTest().catch(() => {});
       break;
     default:
   }
@@ -97,7 +93,7 @@ const createWindow = async () => {
 
   mainWindow = new BrowserWindow({
     show: false,
-    width: 1024,
+    width: 1200,
     height: 728,
     icon: getAssetPath('icon.png'),
     webPreferences: {

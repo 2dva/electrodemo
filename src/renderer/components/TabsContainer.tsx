@@ -1,27 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Calendar, Group, HorizontalScroll, Panel, Tabs, TabsItem, View } from '@vkontakte/vkui';
 import { PanelRecs } from './PanelRecs';
 import { PanelSettings } from './PanelSettings';
-import { fetchRecRows } from '../stores/recStore';
 import { PanelDemo } from './PanelDemo';
 
 export const TabsContainer = () => {
   const [selected, setSelected] = useState('recs');
 
-  const openRecsTab = () => {
-    setSelected('recs');
-    fetchRecRows();
-  };
-
-  useEffect(() => {
-    openRecsTab();
-  }, []);
-
   return (
     <Group style={{ height: '100%' }}>
       <Tabs mode="default">
         <HorizontalScroll arrowSize="m">
-          <TabsItem selected={selected === 'recs'} onClick={() => openRecsTab()}>
+          <TabsItem selected={selected === 'recs'} onClick={() => setSelected('recs')}>
             Recs
           </TabsItem>
           <TabsItem selected={selected === 'demo'} onClick={() => setSelected('demo')}>
