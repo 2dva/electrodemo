@@ -1,5 +1,6 @@
 import {
   Button,
+  ButtonGroup,
   ContentCard,
   CustomSelect,
   FormItem,
@@ -14,6 +15,7 @@ import {
 } from '@vkontakte/vkui';
 import { observer } from 'mobx-react';
 import { useState } from 'react';
+import { Icon24Cancel } from '@vkontakte/icons';
 import { IPanelProps, MODAL_PAGE_OPEN_DB } from '../constants';
 import { modalStore } from '../stores/modalStore';
 import { appStore } from '../stores/appStore';
@@ -36,7 +38,16 @@ export const PanelSettings = observer(({ id }: IPanelProps) => {
     <Panel id={id}>
       <Group header={<Header mode="secondary">Database</Header>}>
         <FormItem>
-          <Button onClick={() => modalStore.openModal(MODAL_PAGE_OPEN_DB)}>Open Database</Button>
+          <ButtonGroup>
+            <Button onClick={() => modalStore.openModal(MODAL_PAGE_OPEN_DB)}>Open Database</Button>
+            <Button
+              onClick={() => appStore.closeDB()}
+              disabled={!appStore.dbinfo.connected}
+              before={<Icon24Cancel />}
+              appearance="neutral"
+              title="Close Database"
+            />
+          </ButtonGroup>
         </FormItem>
         <FormItem>
           {appStore.dbinfo.connected && (

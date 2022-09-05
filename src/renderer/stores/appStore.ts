@@ -38,6 +38,10 @@ class AppStore {
     return executeRemoteFunction('openDB', { filePath });
   };
 
+  closeDB = () => {
+    return executeRemoteFunction('closeDB');
+  };
+
   setFileInfo = (info: IFileInfo) => {
     this.dbinfo.connected = info.connected;
     this.dbinfo.fileName = info.fileName || '';
