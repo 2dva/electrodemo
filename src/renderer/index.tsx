@@ -26,6 +26,9 @@ ipcr.on(Channels.IPC_COMMAND_CHANNEL, (...args) => {
     case Commands.COMMAND_DB_OPEN:
       modalStore.openModal(MODAL_PAGE_OPEN_DB);
       break;
+    case Commands.COMMAND_DB_CLOSE:
+      appStore.closeDB();
+      break;
     case Commands.COMMAND_DB_INFO:
       appStore.setFileInfo(data as IFileInfo);
       break;

@@ -7,6 +7,7 @@ export enum Channels {
 
 export enum Commands {
   COMMAND_DB_OPEN = 'COMMAND_DB_OPEN',
+  COMMAND_DB_CLOSE = 'COMMAND_DB_CLOSE',
   COMMAND_DB_TOOLS = 'COMMAND_DB_TOOLS',
   COMMAND_DB_INFO = 'COMMAND_DB_INFO',
 }

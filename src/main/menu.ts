@@ -107,8 +107,16 @@ export default class MenuBuilder {
           },
         },
         {
+          label: 'Close Database',
+          click: () => {
+            this.sendCommandToRender(Commands.COMMAND_DB_CLOSE);
+          },
+        },
+        { type: 'separator' },
+        {
           label: 'Tools...',
           accelerator: 'Shift+Command+T',
+          enabled: false,
           click: () => {
             this.sendCommandToRender(Commands.COMMAND_DB_TOOLS);
           },
@@ -117,6 +125,7 @@ export default class MenuBuilder {
         {
           label: 'Show info',
           accelerator: 'Command+I',
+          enabled: false,
           click: () => {
             const fName = 'test.txt';
             const fileName = path.resolve(__dirname, fName);
