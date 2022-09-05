@@ -1,6 +1,7 @@
 import {
   Button,
   ButtonGroup,
+  Checkbox,
   ContentCard,
   CustomSelect,
   FormItem,
@@ -49,6 +50,14 @@ export const PanelSettings = observer(({ id }: IPanelProps) => {
             />
           </ButtonGroup>
         </FormItem>
+        <Checkbox
+          style={{ margin: '0 15px 0 15px' }}
+          sizeY={SizeType.COMPACT}
+          checked={appStore.settings.restoreOnStartup}
+          onChange={appStore.switchSettingRestore}
+        >
+          Restore connection on startup
+        </Checkbox>
         <FormItem>
           {appStore.dbinfo.connected && (
             <ContentCard

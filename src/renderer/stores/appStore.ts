@@ -6,11 +6,11 @@ interface DBInfo {
   connected: boolean;
   fileName: string;
   fileSize: number;
-  shouldCreate: boolean;
 }
 
 interface ISettings {
   dark: boolean;
+  restoreOnStartup: boolean;
 }
 
 class AppStore {
@@ -18,27 +18,31 @@ class AppStore {
     connected: false,
     fileName: '',
     fileSize: 0,
-    shouldCreate: false,
   };
 
   settings: ISettings = {
     dark: false,
+    restoreOnStartup: false,
   };
 
   constructor() {
     makeAutoObservable(this);
-    if (localStorage.getItem('settingDark') === '1') {
-      this.settings.dark = true;
-    }
+    this.settings.dark = localStorage.getItem('settingDark') === '1';
+    this.settings.restoreOnStartup = localStorage.getItem('settingRestore') === '1';
   }
 
-  openDB = (filePath: string, shouldCreate = false) => {
+  openDB = (filePath: string) => {
     this.dbinfo.fileName = filePath;
-    this.dbinfo.shouldCreate = shouldCreate;
-    return executeRemoteFunction('openDB', { filePath });
+    return executeRemoteFunction('openDB', { filePath }).then((success) => {
+      if (success) {
+        localStorage.setItem('settingLastFilename', filePath);
+      }
+      return success;
+    });
   };
 
   closeDB = () => {
+    localStorage.removeItem('settingLastFilename');
     return executeRemoteFunction('closeDB');
   };
 
@@ -52,6 +56,11 @@ class AppStore {
     this.settings.dark = !this.settings.dark;
     localStorage.setItem('settingDark', `${+this.settings.dark}`);
     console.log('switchTHeme=', this.settings.dark);
+  };
+
+  switchSettingRestore = () => {
+    this.settings.restoreOnStartup = !this.settings.restoreOnStartup;
+    localStorage.setItem('settingRestore', `${+this.settings.restoreOnStartup}`);
   };
 }
 

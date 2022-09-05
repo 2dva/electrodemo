@@ -4,7 +4,7 @@ import App from './App';
 import { modalStore } from './stores/modalStore';
 import { MODAL_PAGE_OPEN_DB } from './constants';
 import { appStore } from './stores/appStore';
-import { setRenderer } from './simpleBridge';
+import { executeRemoteFunction, setRenderer } from './simpleBridge';
 import { Channels, Commands, IFileInfo } from '../commonConstants';
 
 const container = document.getElementById('root')!;
@@ -41,6 +41,13 @@ ipcr
   .catch(() => {});
 // ipcr.sendMessage(Channels.IPC_EXAMPLE_CHANNEL, ['ping']);
 ipcr.sendMessage(Channels.IPC_EVENT_CHANNEL, ['ready']);
+
+if (localStorage.getItem('settingRestore') === '1') {
+  const lastConnectionFilename = localStorage.getItem('settingLastFilename');
+  if (lastConnectionFilename) {
+    executeRemoteFunction('openDB', { filePath: lastConnectionFilename }).catch(() => {});
+  }
+}
 
 autorun(() => {
   console.log('index:dbStore.file=', appStore.dbinfo.fileName);
