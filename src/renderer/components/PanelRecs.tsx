@@ -4,10 +4,10 @@ import { observer } from 'mobx-react';
 import { autorun } from 'mobx';
 import { useEffect } from 'react';
 import { Icon24Add } from '@vkontakte/icons';
-import { IPanelProps, MODAL_PAGE_EDIT_REC } from '../constants';
+import { IPanelProps } from '../constants';
 import { disconnectRec, fetchRecRows, recStore } from '../stores/recStore';
 import { appStore } from '../stores/appStore';
-import { modalStore } from '../stores/modalStore';
+import { MODAL_PAGE_EDIT_REC, modalStore } from '../stores/modalStore';
 
 const columns = [
   { key: 'rec_id', name: 'Id', width: 30 },

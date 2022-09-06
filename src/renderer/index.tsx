@@ -1,8 +1,7 @@
 import { createRoot } from 'react-dom/client';
 import { autorun } from 'mobx';
 import App from './App';
-import { modalStore } from './stores/modalStore';
-import { MODAL_PAGE_OPEN_DB } from './constants';
+import { MODAL_PAGE_OPEN_DB, modalStore } from './stores/modalStore';
 import { appStore } from './stores/appStore';
 import { executeRemoteFunction, setRenderer } from './simpleBridge';
 import { Channels, Commands, IFileInfo } from '../commonConstants';

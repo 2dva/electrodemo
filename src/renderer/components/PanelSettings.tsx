@@ -17,8 +17,8 @@ import {
 import { observer } from 'mobx-react';
 import { useState } from 'react';
 import { Icon24Cancel } from '@vkontakte/icons';
-import { IPanelProps, MODAL_PAGE_OPEN_DB } from '../constants';
-import { modalStore } from '../stores/modalStore';
+import { IPanelProps } from '../constants';
+import { MODAL_PAGE_OPEN_DB, modalStore } from '../stores/modalStore';
 import { appStore } from '../stores/appStore';
 import { insertRecTestRows } from '../stores/recStore';
 

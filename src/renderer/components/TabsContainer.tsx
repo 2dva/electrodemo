@@ -4,7 +4,7 @@ import { PanelRecs } from './PanelRecs';
 import { PanelSettings } from './PanelSettings';
 import { PanelDemo } from './PanelDemo';
 
-const ALLTABS: { [key: string]: string } = {
+const ALLTABS: Record<string, string> = {
   recs: 'Recs',
   demo: 'Demo',
   calendar: 'Calendar',

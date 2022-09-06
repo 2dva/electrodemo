@@ -1,30 +1,15 @@
 import { observer } from 'mobx-react';
-import { ModalPage, ModalPageHeader, ModalRoot, SplitCol, SplitLayout } from '@vkontakte/vkui';
-import { modalStore } from '../stores/modalStore';
-import { MODAL_PAGE_EDIT_REC, MODAL_PAGE_OPEN_DB } from '../constants';
-import { ModalGroupOpenDB, ModalGroupRecEdit } from './modals';
+import { ModalRoot, SplitCol, SplitLayout } from '@vkontakte/vkui';
+import { MODAL_PAGE_EDIT_REC, MODAL_PAGE_OPEN_DB, modalStore } from '../stores/modalStore';
 import { TabsContainer } from './TabsContainer';
+import { ModalPageOpenDB } from './ModalPageOpenDB';
+import { ModalPageRecEdit } from './ModalPageRecEdit';
 
 export const MainLayout = observer(() => {
   const modal = (
     <ModalRoot activeModal={modalStore.modal.body}>
-      <ModalPage
-        id={MODAL_PAGE_OPEN_DB}
-        onClose={() => modalStore.closeModal()}
-        header={<ModalPageHeader>Open DB File</ModalPageHeader>}
-        hideCloseButton
-      >
-        <ModalGroupOpenDB />
-      </ModalPage>
-      <ModalPage
-        id={MODAL_PAGE_EDIT_REC}
-        onClose={() => modalStore.closeModal()}
-        header={<ModalPageHeader>Add rec</ModalPageHeader>}
-        hideCloseButton
-        size="l"
-      >
-        <ModalGroupRecEdit />
-      </ModalPage>
+      <ModalPageOpenDB id={MODAL_PAGE_OPEN_DB} onClose={() => modalStore.closeModal()} />
+      <ModalPageRecEdit id={MODAL_PAGE_EDIT_REC} onClose={() => modalStore.closeModal()} />
     </ModalRoot>
   );
 

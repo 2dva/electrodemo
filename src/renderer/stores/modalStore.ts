@@ -1,5 +1,8 @@
 import { makeAutoObservable } from 'mobx';
 
+export const MODAL_PAGE_OPEN_DB = 'page_open_db';
+export const MODAL_PAGE_EDIT_REC = 'page_rec_edit';
+
 interface Modal {
   open: boolean;
   body: string | null;
@@ -17,8 +20,6 @@ export class ModalStore {
 
   openModal = (activeModal: string) => {
     this.modal.open = true;
-    console.log('@stor: setting modal.body=', activeModal);
-
     this.modal.body = activeModal;
   };
 
