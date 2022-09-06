@@ -29,7 +29,6 @@ export const ModalGroupOpenDB = () => {
       appStore
         .openDB(filePath)
         .then((success) => {
-          console.log('!!!!', success);
           if (success) {
             modalStore.closeModal();
           } else {
@@ -48,19 +47,31 @@ export const ModalGroupOpenDB = () => {
 
   return (
     <Group>
-      <FormItem top="Path to file" status={formStatus}>
-        <Input getRef={textInput} type="text" defaultValue={lastInputFile} onChange={() => setFormStatus('default')} />
-      </FormItem>
-      <FormItem>
-        <ButtonGroup align="right" stretched>
-          <Button mode="primary" onClick={clickOkHandler}>
-            Open
-          </Button>
-          <Button mode="outline" onClick={() => modalStore.closeModal()}>
-            Cancel
-          </Button>
-        </ButtonGroup>
-      </FormItem>
+      <FormLayout
+        onSubmit={(e) => {
+          e.preventDefault();
+          clickOkHandler();
+        }}
+      >
+        <FormItem top="Path to file" status={formStatus}>
+          <Input
+            getRef={textInput}
+            type="text"
+            defaultValue={lastInputFile}
+            onChange={() => setFormStatus('default')}
+          />
+        </FormItem>
+        <FormItem>
+          <ButtonGroup align="right" stretched>
+            <Button mode="primary" onClick={clickOkHandler}>
+              Open
+            </Button>
+            <Button mode="outline" onClick={() => modalStore.closeModal()}>
+              Cancel
+            </Button>
+          </ButtonGroup>
+        </FormItem>
+      </FormLayout>
     </Group>
   );
 };

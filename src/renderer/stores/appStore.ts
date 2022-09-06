@@ -32,9 +32,9 @@ class AppStore {
   }
 
   openDB = (filePath: string) => {
-    this.dbinfo.fileName = filePath;
     return executeRemoteFunction('openDB', { filePath }).then((success) => {
       if (success) {
+        this.dbinfo.fileName = filePath;
         localStorage.setItem('settingLastFilename', filePath);
       }
       return success;
