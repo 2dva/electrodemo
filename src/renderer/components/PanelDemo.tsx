@@ -11,7 +11,7 @@ import {
 } from '@vkontakte/vkui';
 import { observer } from 'mobx-react';
 import { useState } from 'react';
-import { IPanelProps } from '../constants';
+import { IPanelProps, recTypeOptions } from '../constants';
 
 export const PanelDemo = observer(({ id }: IPanelProps) => {
   const visibleRowCountOptions = [
@@ -22,12 +22,6 @@ export const PanelDemo = observer(({ id }: IPanelProps) => {
   ];
   const defaultVisibleRowCount = '25';
   const [rowCount, setRowCount] = useState(defaultVisibleRowCount);
-  const recTypeOptions = [
-    { label: 'All', value: 'all' },
-    { label: 'News', value: 'news' },
-    { label: 'Polls', value: 'poll' },
-    { label: 'Tasks', value: 'task' },
-  ];
 
   return (
     <Panel id={id}>
