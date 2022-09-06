@@ -1,32 +1,30 @@
-import { useState } from 'react';
-import { Calendar, Group, HorizontalScroll, Panel, Tabs, TabsItem, View } from '@vkontakte/vkui';
+import { ReactNode, useState } from 'react';
+import { Calendar, Group, Panel, Tabs, TabsItem, View } from '@vkontakte/vkui';
 import { PanelRecs } from './PanelRecs';
 import { PanelSettings } from './PanelSettings';
 import { PanelDemo } from './PanelDemo';
 
+const ALLTABS: { [key: string]: string } = {
+  recs: 'Recs',
+  demo: 'Demo',
+  calendar: 'Calendar',
+  settings: 'Settings',
+};
+
 export const TabsContainer = () => {
   const [selected, setSelected] = useState('recs');
+  const tabs: Array<ReactNode> = Object.keys(ALLTABS).map((tab) => {
+    return (
+      <TabsItem selected={selected === tab} onClick={() => setSelected(tab)}>
+        {ALLTABS[tab]}
+      </TabsItem>
+    );
+  });
 
   return (
-    <Group style={{ height: '100%' }}>
-      <Tabs mode="default">
-        <HorizontalScroll arrowSize="m">
-          <TabsItem selected={selected === 'recs'} onClick={() => setSelected('recs')}>
-            Recs
-          </TabsItem>
-          <TabsItem selected={selected === 'demo'} onClick={() => setSelected('demo')}>
-            Demo
-          </TabsItem>
-          <TabsItem selected={selected === 'calendar'} onClick={() => setSelected('calendar')}>
-            Calendar
-          </TabsItem>
-          <TabsItem selected={selected === 'settings'} onClick={() => setSelected('settings')}>
-            Settings
-          </TabsItem>
-        </HorizontalScroll>
-      </Tabs>
-      <br />
-      <View activePanel={selected} style={{ bottom: 0, left: 0 }}>
+    <Group>
+      <Tabs mode="default">{tabs}</Tabs>
+      <View activePanel={selected}>
         <PanelRecs id="recs" />
         <PanelSettings id="settings" />
         <PanelDemo id="demo" />
