@@ -10,7 +10,7 @@ module.exports = {
     'no-console': 'off',
     'import/prefer-default-export': 'off',
     '@typescript-eslint/ban-ts-comment': 'off',
-    'max-len': 'off',
+    // 'max-len': 'off',
     'no-else-return': 'warn',
     'no-plusplus': 'off',
   },

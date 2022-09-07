@@ -15,7 +15,7 @@ export const TabsContainer = () => {
   const [selected, setSelected] = useState('recs');
   const tabs: Array<ReactNode> = Object.keys(ALLTABS).map((tab) => {
     return (
-      <TabsItem selected={selected === tab} onClick={() => setSelected(tab)}>
+      <TabsItem key={tab} selected={selected === tab} onClick={() => setSelected(tab)}>
         {ALLTABS[tab]}
       </TabsItem>
     );

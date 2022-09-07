@@ -1,10 +1,11 @@
 import path from 'path';
-import { closeFileDatabase, getQuery, openFileDatabase, prepareQuery } from './engine';
+import { closeFileDatabase, execQuery, getQuery, openFileDatabase, prepareQuery } from './engine';
+import { IRecItem } from '../commonConstants';
 
 const dbTestFile = '../test.db';
 const dbTestFilePath = path.resolve(__dirname, dbTestFile);
 
-const SQL_SELECT_REC_ROWS = 'SELECT rec_id, date, cat_id, created, title FROM rec';
+const SQL_SELECT_REC_ROWS = 'SELECT rec_id, date, cat_id, created, title FROM rec ORDER BY rec_id DESC';
 const SQL_INSERT_REC_ROW =
   'INSERT INTO rec (date, cat_id, title, text, created, tags) VALUES (date(), ?, ?, ?, datetime(), ?)';
 
@@ -18,13 +19,24 @@ export const dbFetchRecRows = () => {
     });
 };
 
+export const dbInsertRecRow = (data: IRecItem) => {
+  const params = [data.catId, data.title, data.text, data.tags];
+  return execQuery(SQL_INSERT_REC_ROW, params)
+    .then((result) => {
+      return result;
+    })
+    .catch((err) => {
+      console.log(`Async Database insert query error`, err);
+    });
+};
+
 export const dbInsertRecTestRows = (n: number) => {
   const getRandomSymbol = (): string => {
     return String.fromCharCode(((Math.random() * 100) % 90) + 33);
   };
 
   const getRandomCategory = (): number => {
-    return ((Math.random() * 10) % 4) + 1;
+    return Math.floor((Math.random() * 100) % 4) + 1;
   };
   console.log('Api.insertRecTestRows', n);
   return new Promise((resolve, reject) => {

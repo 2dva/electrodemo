@@ -1,5 +1,6 @@
 import { makeAutoObservable } from 'mobx';
 import { executeRemoteFunction } from '../simpleBridge';
+import { IRecItem } from '../../commonConstants';
 
 export class RecStore {
   rows: Array<unknown> = [];
@@ -23,6 +24,14 @@ export const fetchRecRows = () => {
   executeRemoteFunction('fetchRecRows', {})
     .then((result) => {
       return recStore.setRows(result as Array<unknown>);
+    })
+    .catch(() => {});
+};
+
+export const insertRecRow = (data: IRecItem) => {
+  return executeRemoteFunction('insertRecRow', data)
+    .then((result) => {
+      return !!result;
     })
     .catch(() => {});
 };

@@ -80,6 +80,7 @@ export const prepareQuery = (query: string): Promise<IStatement | undefined> => 
 export const execQuery = (query: string, params: Array<unknown>): Promise<boolean> => {
   return new Promise((resolve, reject) => {
     const stmt = engine?.prepare(query);
+    console.log('DB:Engine:before executing:params=', params);
     stmt?.run(params, (err: unknown) => {
       if (err) {
         console.log(`execQuery: query error ${err}`);

@@ -1,6 +1,6 @@
 import { ipcMain } from 'electron';
-import { closeDB, dbFetchRecRows, dbInsertRecTestRows, openDBFile } from '../db/manager';
-import { Channels } from '../commonConstants';
+import { closeDB, dbFetchRecRows, dbInsertRecRow, dbInsertRecTestRows, openDBFile } from '../db/manager';
+import { Channels, IRecItem } from '../commonConstants';
 
 type IApiFunction = (params: Record<string, unknown>) => unknown;
 type IAPI = Record<string, IApiFunction>;
@@ -16,6 +16,18 @@ const Api: IAPI = {
 
   fetchRecRows: () => {
     return dbFetchRecRows();
+  },
+
+  insertRecRow: ({ catId, created, title, text, tags, date }) => {
+    const data = {
+      catId,
+      created,
+      title,
+      text,
+      tags,
+      date,
+    };
+    return dbInsertRecRow(data as IRecItem);
   },
 
   insertRecTestRows: ({ n }) => {

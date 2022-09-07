@@ -16,6 +16,8 @@ import {
 } from '@vkontakte/vkui';
 import { modalStore } from '../stores/modalStore';
 import { recTypeOptions } from '../constants';
+import { insertRecRow } from '../stores/recStore';
+import { IRecItem } from '../../commonConstants';
 
 interface Props {
   id: string;
@@ -25,6 +27,9 @@ type IFormStatus = 'default' | 'error' | 'valid';
 
 export const ModalPageRecEdit = ({ id, onClose }: Props) => {
   const titleInput = useRef<HTMLInputElement>(null);
+  const textInput = useRef<HTMLTextAreaElement>(null);
+  const tagsInput = useRef<HTMLInputElement>(null);
+  const catSelect = useRef<HTMLSelectElement>(null);
   const [formTitleStatus, setFormTitleStatus] = useState<IFormStatus>('default');
   const [value, setValue] = useState(new Date());
 
@@ -34,7 +39,22 @@ export const ModalPageRecEdit = ({ id, onClose }: Props) => {
 
   const clickOkHandler = () => {
     if (validateForm()) {
-      modalStore.closeModal();
+      const data = {
+        catId: Number(catSelect.current?.value || 0),
+        title: titleInput.current?.value || '',
+        text: textInput.current?.value || '',
+        tags: tagsInput.current?.value || '',
+      };
+      insertRecRow(data as IRecItem)
+        .then((success) => {
+          if (success) {
+            modalStore.closeModal();
+          } else {
+            setFormTitleStatus('error');
+          }
+          return true;
+        })
+        .catch(() => {});
     } else {
       setFormTitleStatus('error');
     }
@@ -66,14 +86,20 @@ export const ModalPageRecEdit = ({ id, onClose }: Props) => {
               <DateInput value={value} showNeighboringMonth disableFuture />
             </FormItem>
             <FormItem top="Type">
-              <CustomSelect options={recTypeOptions} value="note" dropdownOffsetDistance={5} mode="plain" />
+              <CustomSelect
+                getRef={catSelect}
+                options={recTypeOptions}
+                defaultValue="note"
+                dropdownOffsetDistance={5}
+                mode="plain"
+              />
             </FormItem>
           </FormLayoutGroup>
           <FormItem top="Description">
-            <Textarea rows={3} sizeY={SizeType.COMPACT} />
+            <Textarea getRef={textInput} rows={3} sizeY={SizeType.COMPACT} />
           </FormItem>
           <FormItem top="Tags">
-            <Input type="text" placeholder="Space-delimited tags" sizeY={SizeType.COMPACT} />
+            <Input getRef={tagsInput} type="text" placeholder="Space-delimited tags" sizeY={SizeType.COMPACT} />
           </FormItem>
           <FormItem>
             <ButtonGroup align="right" stretched>

@@ -17,3 +17,13 @@ export interface IFileInfo {
   fileName: string | null;
   fileSize: number;
 }
+
+export interface IRecItem {
+  recId?: number;
+  catId: number;
+  created?: number;
+  title: string;
+  text: string;
+  tags: string;
+  date?: string;
+}

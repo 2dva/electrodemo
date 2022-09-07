@@ -10,7 +10,7 @@ const container = document.getElementById('root')!;
 const root = createRoot(container);
 root.render(<App />);
 
-const SHOW_WELCOME = true;
+const SHOW_WELCOME = false;
 const ipcr = window.electron.ipcRenderer;
 setRenderer(ipcr);
 
