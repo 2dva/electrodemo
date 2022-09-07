@@ -1,7 +1,7 @@
 import { createRoot } from 'react-dom/client';
 import { autorun } from 'mobx';
 import App from './App';
-import { MODAL_PAGE_OPEN_DB, modalStore } from './stores/modalStore';
+import { MODAL_PAGE_OPEN_DB, MODAL_PAGE_WELCOME, modalStore } from './stores/modalStore';
 import { appStore } from './stores/appStore';
 import { executeRemoteFunction, setRenderer } from './simpleBridge';
 import { Channels, Commands, IFileInfo } from '../commonConstants';
@@ -10,6 +10,7 @@ const container = document.getElementById('root')!;
 const root = createRoot(container);
 root.render(<App />);
 
+const SHOW_WELCOME = true;
 const ipcr = window.electron.ipcRenderer;
 setRenderer(ipcr);
 
@@ -44,7 +45,9 @@ ipcr
 // ipcr.sendMessage(Channels.IPC_EXAMPLE_CHANNEL, ['ping']);
 ipcr.sendMessage(Channels.IPC_EVENT_CHANNEL, ['ready']);
 
-if (localStorage.getItem('settingRestore') === '1') {
+if (SHOW_WELCOME) {
+  modalStore.openModal(MODAL_PAGE_WELCOME);
+} else if (localStorage.getItem('settingRestore') === '1') {
   const lastConnectionFilename = localStorage.getItem('settingLastFilename');
   if (lastConnectionFilename) {
     executeRemoteFunction('openDB', { filePath: lastConnectionFilename }).catch(() => {});

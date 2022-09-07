@@ -1,5 +1,6 @@
 import { makeAutoObservable } from 'mobx';
 
+export const MODAL_PAGE_WELCOME = 'page_welcome';
 export const MODAL_PAGE_OPEN_DB = 'page_open_db';
 export const MODAL_PAGE_EDIT_REC = 'page_rec_edit';
 
