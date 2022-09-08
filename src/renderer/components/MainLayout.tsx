@@ -8,10 +8,10 @@ import { ModalPageWelcome } from './ModalPageWelcome';
 
 export const MainLayout = observer(() => {
   const modal = (
-    <ModalRoot activeModal={modalStore.modal.body}>
+    <ModalRoot activeModal={modalStore.modal.body} onClose={() => modalStore.closeModal()}>
       <ModalPageWelcome id={MODAL_PAGE_WELCOME} />
-      <ModalPageOpenDB id={MODAL_PAGE_OPEN_DB} onClose={() => modalStore.closeModal()} />
-      <ModalPageRecEdit id={MODAL_PAGE_EDIT_REC} onClose={() => modalStore.closeModal()} />
+      <ModalPageOpenDB id={MODAL_PAGE_OPEN_DB} />
+      <ModalPageRecEdit id={MODAL_PAGE_EDIT_REC} />
     </ModalRoot>
   );
 

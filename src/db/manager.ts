@@ -1,21 +1,32 @@
 import path from 'path';
-import { closeFileDatabase, execQuery, getQuery, openFileDatabase, prepareQuery } from './engine';
+import { closeFileDatabase, execQuery, getQuery, getQueryAll, openFileDatabase, prepareQuery } from './engine';
 import { IRecItem } from '../commonConstants';
 
 const dbTestFile = '../test.db';
 const dbTestFilePath = path.resolve(__dirname, dbTestFile);
 
 const SQL_SELECT_REC_ROWS = 'SELECT rec_id, date, cat_id, created, title FROM rec ORDER BY rec_id DESC';
+const SQL_SELECT_REC_ROW = 'SELECT * FROM rec WHERE rec_id = ?';
 const SQL_INSERT_REC_ROW =
   'INSERT INTO rec (date, cat_id, title, text, created, tags) VALUES (date(), ?, ?, ?, datetime(), ?)';
 
 export const dbFetchRecRows = () => {
-  return getQuery(SQL_SELECT_REC_ROWS)
+  return getQueryAll(SQL_SELECT_REC_ROWS)
     .then((rows) => {
       return rows;
     })
     .catch((err) => {
       console.log(`Async Database query error`, err);
+    });
+};
+
+export const dbFetchRecRow = (recId: number) => {
+  return getQuery(SQL_SELECT_REC_ROW, [recId])
+    .then((result) => {
+      return result;
+    })
+    .catch((err) => {
+      console.log(`Async Database insert query error`, err);
     });
 };
 

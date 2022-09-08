@@ -18,6 +18,16 @@ export interface IFileInfo {
   fileSize: number;
 }
 
+export interface IRecDB {
+  rec_id?: number;
+  cat_id: number;
+  created?: number;
+  title: string;
+  text: string;
+  tags: string;
+  date?: string;
+}
+
 export interface IRecItem {
   recId?: number;
   catId: number;

@@ -13,7 +13,7 @@ export const executeRemoteFunction = (
 ): Promise<unknown> => {
   console.log(`Bridge:executeRemoteFunction:invoke functionName=${functionName}`);
   return ipcRenderer.invoke(Channels.IPC_FUNCTION_CHANNEL, [functionName, data]).then((result) => {
-    console.log('Bridge: IPC_EVENT_CHANNEL: result=', result);
+    console.log('Bridge: IPC_EVENT_CHANNEL result');
     return result;
   });
 };

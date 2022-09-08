@@ -1,5 +1,5 @@
 import { ipcMain } from 'electron';
-import { closeDB, dbFetchRecRows, dbInsertRecRow, dbInsertRecTestRows, openDBFile } from '../db/manager';
+import { closeDB, dbFetchRecRow, dbFetchRecRows, dbInsertRecRow, dbInsertRecTestRows, openDBFile } from '../db/manager';
 import { Channels, IRecItem } from '../commonConstants';
 
 type IApiFunction = (params: Record<string, unknown>) => unknown;
@@ -12,6 +12,10 @@ const Api: IAPI = {
 
   closeDB: () => {
     return closeDB();
+  },
+
+  fetchRecRow: ({ recId }) => {
+    return dbFetchRecRow(recId as number);
   },
 
   fetchRecRows: () => {

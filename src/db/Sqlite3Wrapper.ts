@@ -17,6 +17,7 @@ export interface IStatement {
 
 export interface IEngineWrapper {
   all(query: string, cb: (err: unknown, rows: unknown[]) => void): void;
+  get(query: string, params: Array<unknown>, cb: (err: unknown, row: unknown) => void): void;
   prepare(query: string): IStatement;
 }
 
@@ -28,9 +29,16 @@ export class Sqlite3Wrapper implements IEngineWrapper {
     console.log('Sqlite3Wrapper:constructor');
   }
 
+  get(query: string, params: Array<unknown>, cb: (err: unknown, row: unknown) => void) {
+    return this.database.get(query, ...params, (err: unknown, row: unknown) => {
+      console.log(`Sqlite3:Database query get success`);
+      cb(err, row);
+    });
+  }
+
   all(query: string, cb: (err: unknown, rows: unknown[]) => void) {
     return this.database.all(query, (err: unknown, rows: unknown[]) => {
-      console.log(`Sqlite3:Database query success`);
+      console.log(`Sqlite3:Database query all success`);
       cb(err, rows);
     });
   }

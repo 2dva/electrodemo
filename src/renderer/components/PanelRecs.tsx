@@ -5,9 +5,9 @@ import { autorun } from 'mobx';
 import { useEffect } from 'react';
 import { Icon24Add } from '@vkontakte/icons';
 import { IPanelProps } from '../constants';
-import { disconnectRec, fetchRecRows, recStore } from '../stores/recStore';
+import { disconnectRec, fetchRecRows, openAddRecDialog, openEditRecDialog, recStore } from '../stores/recStore';
 import { appStore } from '../stores/appStore';
-import { MODAL_PAGE_EDIT_REC, modalStore } from '../stores/modalStore';
+import { IRecDB } from '../../commonConstants';
 
 const columns = [
   { key: 'rec_id', name: 'Id', width: 30 },
@@ -23,16 +23,27 @@ export const PanelRecs = observer(({ id }: IPanelProps) => {
     fetchRecRows();
   }, []);
 
+  const onRowDClick = (row: IRecDB) => {
+    if (row.rec_id) {
+      openEditRecDialog(row.rec_id);
+    }
+  };
+
   return (
     <Panel id={id}>
       <Group>
-        <DataGrid columns={columns} rows={recStore.rows} className={appStore.settings.dark ? dgDarkClassName : ''} />
+        <DataGrid
+          columns={columns}
+          rows={recStore.rows}
+          className={appStore.settings.dark ? dgDarkClassName : ''}
+          onRowDoubleClick={onRowDClick}
+        />
       </Group>
       <Div style={{ position: 'absolute', right: '5px', bottom: '20px' }}>
         <Button
           size="l"
           before={<Icon24Add />}
-          onClick={() => modalStore.openModal(MODAL_PAGE_EDIT_REC)}
+          onClick={() => openAddRecDialog()}
           disabled={!appStore.dbinfo.connected}
         />
       </Div>

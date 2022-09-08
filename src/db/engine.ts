@@ -56,14 +56,28 @@ export const openFileDatabase = (fileName: string): Promise<boolean> => {
   });
 };
 
-export const getQuery = (query: string): Promise<Array<unknown>> => {
+export const getQuery = (query: string, params: Array<unknown>): Promise<unknown> => {
   return new Promise((resolve, reject) => {
-    engine?.all(query, (err: unknown, rows: unknown[]) => {
+    engine?.get(query, params, (err: unknown, row: unknown) => {
       if (err) {
         console.log(`getQuery: query error`, err);
         reject(err);
       } else {
-        console.log(`getQuery: query success`);
+        console.log(`getQuery: query success`, row);
+        resolve(row);
+      }
+    });
+  });
+};
+
+export const getQueryAll = (query: string): Promise<Array<unknown>> => {
+  return new Promise((resolve, reject) => {
+    engine?.all(query, (err: unknown, rows: unknown[]) => {
+      if (err) {
+        console.log(`getQueryAll: query error`, err);
+        reject(err);
+      } else {
+        console.log(`getQueryAll: query success`);
         resolve(rows);
       }
     });

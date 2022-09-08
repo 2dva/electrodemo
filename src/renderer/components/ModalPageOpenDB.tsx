@@ -5,12 +5,11 @@ import { modalStore } from '../stores/modalStore';
 
 interface Props {
   id: string;
-  onClose: VoidFunction;
 }
 type IFormStatus = 'default' | 'error' | 'valid';
 let lastInputFile = '';
 
-export const ModalPageOpenDB = ({ id, onClose }: Props) => {
+export const ModalPageOpenDB = ({ id }: Props) => {
   const textInput = useRef<HTMLInputElement>(null);
   const [formStatus, setFormStatus] = useState<IFormStatus>('default');
 
@@ -37,7 +36,7 @@ export const ModalPageOpenDB = ({ id, onClose }: Props) => {
   }, []);
 
   return (
-    <ModalPage id={id} onClose={onClose} header={<ModalPageHeader>Open DB File</ModalPageHeader>} hideCloseButton>
+    <ModalPage id={id} header={<ModalPageHeader>Open DB File</ModalPageHeader>} hideCloseButton>
       <Group>
         <FormLayout
           onSubmit={(e) => {
