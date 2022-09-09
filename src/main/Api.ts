@@ -1,5 +1,13 @@
 import { ipcMain } from 'electron';
-import { closeDB, dbFetchRecRow, dbFetchRecRows, dbInsertRecRow, dbInsertRecTestRows, openDBFile } from '../db/manager';
+import {
+  closeDB,
+  dbFetchRecRow,
+  dbFetchRecRows,
+  dbInsertRecRow,
+  dbInsertRecTestRows,
+  dbUpdateRecRow,
+  openDBFile,
+} from '../db/manager';
 import { Channels, IRecItem } from '../commonConstants';
 
 type IApiFunction = (params: Record<string, unknown>) => unknown;
@@ -32,6 +40,17 @@ const Api: IAPI = {
       date,
     };
     return dbInsertRecRow(data as IRecItem);
+  },
+
+  updateRecRow: ({ recId, title, text, tags, date }) => {
+    const data = {
+      recId,
+      title,
+      text,
+      tags,
+      date,
+    };
+    return dbUpdateRecRow(data as IRecItem);
   },
 
   insertRecTestRows: ({ n }) => {

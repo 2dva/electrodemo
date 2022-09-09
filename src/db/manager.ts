@@ -1,14 +1,10 @@
 import path from 'path';
 import { closeFileDatabase, execQuery, getQuery, getQueryAll, openFileDatabase, prepareQuery } from './engine';
 import { IRecItem } from '../commonConstants';
+import { SQL_INSERT_REC_ROW, SQL_SELECT_REC_ROW, SQL_SELECT_REC_ROWS, SQL_UPDATE_REC_ROW } from './sqlConstants';
 
 const dbTestFile = '../test.db';
 const dbTestFilePath = path.resolve(__dirname, dbTestFile);
-
-const SQL_SELECT_REC_ROWS = 'SELECT rec_id, date, cat_id, created, title FROM rec ORDER BY rec_id DESC';
-const SQL_SELECT_REC_ROW = 'SELECT * FROM rec WHERE rec_id = ?';
-const SQL_INSERT_REC_ROW =
-  'INSERT INTO rec (date, cat_id, title, text, created, tags) VALUES (date(), ?, ?, ?, datetime(), ?)';
 
 export const dbFetchRecRows = () => {
   return getQueryAll(SQL_SELECT_REC_ROWS)
@@ -33,6 +29,17 @@ export const dbFetchRecRow = (recId: number) => {
 export const dbInsertRecRow = (data: IRecItem) => {
   const params = [data.catId, data.title, data.text, data.tags];
   return execQuery(SQL_INSERT_REC_ROW, params)
+    .then((result) => {
+      return result;
+    })
+    .catch((err) => {
+      console.log(`Async Database insert query error`, err);
+    });
+};
+
+export const dbUpdateRecRow = (data: IRecItem) => {
+  const params = [data.title, data.text, data.tags, data.recId];
+  return execQuery(SQL_UPDATE_REC_ROW, params)
     .then((result) => {
       return result;
     })

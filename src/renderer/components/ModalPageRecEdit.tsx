@@ -16,7 +16,7 @@ import {
 } from '@vkontakte/vkui';
 import { modalStore } from '../stores/modalStore';
 import { recTypeOptions } from '../constants';
-import { insertRecRow, loadRecData, recStore } from '../stores/recStore';
+import { insertRecRow, loadRecData, recStore, updateRecRow } from '../stores/recStore';
 import { IRecItem } from '../../commonConstants';
 
 interface Props {
@@ -47,13 +47,14 @@ export const ModalPageRecEdit = ({ id }: Props) => {
 
   const clickOkHandler = () => {
     if (validateForm()) {
-      const data = {
+      const data: IRecItem = {
+        recId: recStore.recId,
         catId: Number(catValue),
         title: recValue.title,
         text: recValue.text,
         tags: recValue.tags,
       };
-      insertRecRow(data as IRecItem)
+      (recStore.recId ? updateRecRow(data) : insertRecRow(data))
         .then((success) => {
           if (success) {
             modalStore.closeModal();

@@ -74,6 +74,14 @@ export const insertRecRow = (data: IRecItem) => {
     .catch(() => {});
 };
 
+export const updateRecRow = (data: IRecItem) => {
+  return executeRemoteFunction('updateRecRow', data)
+    .then((result) => {
+      return !!result;
+    })
+    .catch(() => {});
+};
+
 export const insertRecTestRows = (n: number) => {
   executeRemoteFunction('insertRecTestRows', { n }).catch(() => {});
 };
