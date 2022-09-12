@@ -1,5 +1,5 @@
 import { Button, Div, Group, Panel } from '@vkontakte/vkui';
-import DataGrid from 'react-data-grid';
+import DataGrid, { FormatterProps } from 'react-data-grid';
 import { observer } from 'mobx-react';
 import { autorun } from 'mobx';
 import { useEffect } from 'react';
@@ -7,12 +7,16 @@ import { Icon24Add } from '@vkontakte/icons';
 import { IPanelProps } from '../constants';
 import { disconnectRec, fetchRecRows, openAddRecDialog, openEditRecDialog, recStore } from '../stores/recStore';
 import { appStore } from '../stores/appStore';
-import { IRecDB } from '../../commonConstants';
+import { CategoryArray, IRecDB } from '../../commonConstants';
+
+const catFormatter = (column: FormatterProps<IRecDB>): string => {
+  return CategoryArray[column.row.cat_id] || '[unknown]';
+};
 
 const columns = [
   { key: 'rec_id', name: 'Id', width: 30 },
   { key: 'date', name: 'Day', width: 100 },
-  { key: 'cat_id', name: 'Category', width: 120 },
+  { key: 'cat_id', name: 'Category', width: 120, formatter: catFormatter },
   { key: 'title', name: 'Title' },
 ];
 
