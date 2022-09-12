@@ -69,6 +69,7 @@ export const loadRecData = (recId: number) => {
 export const insertRecRow = (data: IRecItem) => {
   return executeRemoteFunction('insertRecRow', data)
     .then((result) => {
+      fetchRecRows();
       return !!result;
     })
     .catch(() => {});
@@ -77,6 +78,7 @@ export const insertRecRow = (data: IRecItem) => {
 export const updateRecRow = (data: IRecItem) => {
   return executeRemoteFunction('updateRecRow', data)
     .then((result) => {
+      fetchRecRows();
       return !!result;
     })
     .catch(() => {});
