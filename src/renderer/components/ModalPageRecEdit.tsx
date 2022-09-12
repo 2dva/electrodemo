@@ -15,9 +15,8 @@ import {
   Textarea,
 } from '@vkontakte/vkui';
 import { modalStore, showToastError, showToastSuccess } from '../stores/modalStore';
-import { recTypeOptions } from '../constants';
 import { insertRecRow, loadRecData, recStore, updateRecRow } from '../stores/recStore';
-import { IRecItem } from '../../commonConstants';
+import { CategoryArray, IRecItem } from '../../commonConstants';
 
 interface Props {
   id: string;
@@ -25,20 +24,20 @@ interface Props {
 type IFormStatus = 'default' | 'error' | 'valid';
 
 const defaultRecValue: IRecItem = {
-  recId: 0,
-  catId: 1,
+  recId: undefined,
+  catId: 0,
   title: '',
   text: '',
   tags: '',
   date: new Date(),
 };
 
+const recordTypeOptions = CategoryArray.map((val, index) => {
+  return { label: val, value: index };
+});
+
 export const ModalPageRecEdit = ({ id }: Props) => {
-  const titleInput = useRef<HTMLInputElement>(null);
-  const catSelect = useRef<HTMLSelectElement>(null);
   const [formTitleStatus, setFormTitleStatus] = useState<IFormStatus>('default');
-  const [value, setValue] = useState(new Date());
-  const [catValue, setCatValue] = useState<string>('1');
   const [recValue, setRecValue] = useState<IRecItem>(defaultRecValue);
 
   const validateForm = () => {
@@ -48,15 +47,15 @@ export const ModalPageRecEdit = ({ id }: Props) => {
   const clickOkHandler = () => {
     if (validateForm()) {
       const data: IRecItem = {
-        recId: recStore.recId,
-        catId: Number(catValue) || 1,
+        recId: recValue.recId,
+        catId: recValue.catId,
         title: recValue.title,
         text: recValue.text,
         tags: recValue.tags,
         date: recValue.date,
       };
       console.log('ON CLICK OK: date=', data.date);
-      (recStore.recId ? updateRecRow(data) : insertRecRow(data))
+      (data.recId ? updateRecRow(data) : insertRecRow(data))
         .then((success) => {
           if (success) {
             modalStore.closeModal();
@@ -74,7 +73,6 @@ export const ModalPageRecEdit = ({ id }: Props) => {
   };
 
   useEffect(() => {
-    titleInput.current?.focus();
     if (recStore.recId) {
       loadRecData(recStore.recId)
         .then((recItem) => {
@@ -95,7 +93,7 @@ export const ModalPageRecEdit = ({ id }: Props) => {
       id={id}
       onClose={onPageClose}
       onClosed={onPageClose}
-      header={<ModalPageHeader>{recStore.recId ? `Record #${recStore.recId}` : 'New record'}</ModalPageHeader>}
+      header={<ModalPageHeader>{recValue.recId ? `Record #${recValue.recId}` : 'New record'}</ModalPageHeader>}
       hideCloseButton
       size="l"
     >
@@ -108,10 +106,10 @@ export const ModalPageRecEdit = ({ id }: Props) => {
         >
           <FormItem top="Title" status={formTitleStatus}>
             <Input
-              getRef={titleInput}
               type="text"
               sizeY={SizeType.COMPACT}
               value={recValue.title}
+              autoFocus
               onChange={(e) => setRecValue({ ...recValue, title: e.target.value })}
             />
           </FormItem>
@@ -129,12 +127,11 @@ export const ModalPageRecEdit = ({ id }: Props) => {
             </FormItem>
             <FormItem top="Type">
               <CustomSelect
-                getRef={catSelect}
-                options={recTypeOptions}
-                value={catValue}
+                options={recordTypeOptions}
+                value={recValue.catId}
                 dropdownOffsetDistance={5}
                 mode="plain"
-                onChange={(e) => setCatValue(e.target.value)}
+                onChange={(e) => setRecValue({ ...recValue, catId: Number(e.target.value) })}
               />
             </FormItem>
           </FormLayoutGroup>
@@ -158,7 +155,7 @@ export const ModalPageRecEdit = ({ id }: Props) => {
           <FormItem>
             <ButtonGroup align="right" stretched>
               <Button mode="primary" onClick={clickOkHandler}>
-                {recStore.recId ? 'Save' : 'Add'}
+                {recValue.recId ? 'Save' : 'Add'}
               </Button>
               <Button mode="outline" onClick={() => modalStore.closeModal()}>
                 Cancel

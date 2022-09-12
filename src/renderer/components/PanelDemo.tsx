@@ -11,7 +11,14 @@ import {
 } from '@vkontakte/vkui';
 import { observer } from 'mobx-react';
 import { useState } from 'react';
-import { IPanelProps, recTypeOptions } from '../constants';
+import { IPanelProps } from '../constants';
+
+const recTypeOptions = [
+  { label: 'Note', value: 'note' },
+  { label: 'News', value: 'news' },
+  { label: 'Poll', value: 'poll' },
+  { label: 'Task', value: 'task' },
+];
 
 export const PanelDemo = observer(({ id }: IPanelProps) => {
   const visibleRowCountOptions = [

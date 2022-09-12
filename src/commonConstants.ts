@@ -37,3 +37,5 @@ export interface IRecItem {
   tags: string;
   date?: Date;
 }
+
+export const CategoryArray = ['journal', 'event', 'note', 'news'];
