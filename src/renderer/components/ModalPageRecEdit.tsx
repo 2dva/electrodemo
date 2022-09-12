@@ -30,7 +30,7 @@ const defaultRecValue: IRecItem = {
   title: '',
   text: '',
   tags: '',
-  date: undefined,
+  date: new Date(),
 };
 
 export const ModalPageRecEdit = ({ id }: Props) => {
@@ -49,11 +49,13 @@ export const ModalPageRecEdit = ({ id }: Props) => {
     if (validateForm()) {
       const data: IRecItem = {
         recId: recStore.recId,
-        catId: Number(catValue),
+        catId: Number(catValue) || 1,
         title: recValue.title,
         text: recValue.text,
         tags: recValue.tags,
+        date: recValue.date,
       };
+      console.log('ON CLICK OK: date=', data.date);
       (recStore.recId ? updateRecRow(data) : insertRecRow(data))
         .then((success) => {
           if (success) {
@@ -91,7 +93,7 @@ export const ModalPageRecEdit = ({ id }: Props) => {
       id={id}
       onClose={onPageClose}
       onClosed={onPageClose}
-      header={<ModalPageHeader>{recStore.recId ? 'Edit' : 'Add'} rec</ModalPageHeader>}
+      header={<ModalPageHeader>{recStore.recId ? `Record #${recStore.recId}` : 'New record'}</ModalPageHeader>}
       hideCloseButton
       size="l"
     >
@@ -113,7 +115,15 @@ export const ModalPageRecEdit = ({ id }: Props) => {
           </FormItem>
           <FormLayoutGroup mode="horizontal">
             <FormItem top="Date">
-              <DateInput value={value} showNeighboringMonth disableFuture />
+              <DateInput
+                value={recValue.date}
+                onChange={(date) => {
+                  console.log('DATE ONCHANGE value=', date);
+                  setRecValue({ ...recValue, date });
+                }}
+                showNeighboringMonth
+                disableFuture
+              />
             </FormItem>
             <FormItem top="Type">
               <CustomSelect

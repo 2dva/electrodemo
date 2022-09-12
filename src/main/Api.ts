@@ -42,9 +42,10 @@ const Api: IAPI = {
     return dbInsertRecRow(data as IRecItem);
   },
 
-  updateRecRow: ({ recId, title, text, tags, date }) => {
+  updateRecRow: ({ recId, catId, title, text, tags, date }) => {
     const data = {
       recId,
+      catId,
       title,
       text,
       tags,

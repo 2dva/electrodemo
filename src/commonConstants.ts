@@ -35,5 +35,5 @@ export interface IRecItem {
   title: string;
   text: string;
   tags: string;
-  date?: string;
+  date?: Date;
 }

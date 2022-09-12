@@ -59,7 +59,7 @@ export const loadRecData = (recId: number) => {
         title: result.title,
         text: result.text,
         tags: result.tags,
-        date: result.date,
+        date: new Date(result.date) || undefined,
       };
       return recItem;
     })

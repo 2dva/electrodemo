@@ -29,6 +29,10 @@ const getEngineClass = (engineType: Engines = Engines.DB_ENGINE_SQLITE3) => {
   return Sqlite3Wrapper;
 };
 
+export const formatSQLDate = (date: Date = new Date()): string => {
+  return date.toJSON().slice(0, 10);
+};
+
 export const closeFileDatabase = () => {
   engine = undefined;
 
