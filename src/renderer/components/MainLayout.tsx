@@ -5,6 +5,7 @@ import { TabsContainer } from './TabsContainer';
 import { ModalPageOpenDB } from './ModalPageOpenDB';
 import { ModalPageRecEdit } from './ModalPageRecEdit';
 import { ModalPageWelcome } from './ModalPageWelcome';
+import { Toast } from './Toast';
 
 export const MainLayout = observer(() => {
   const modal = (
@@ -19,6 +20,7 @@ export const MainLayout = observer(() => {
     <SplitLayout modal={modal}>
       <SplitCol>
         <TabsContainer />
+        <Toast />;
       </SplitCol>
     </SplitLayout>
   );

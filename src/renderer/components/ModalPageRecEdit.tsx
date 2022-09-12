@@ -14,7 +14,7 @@ import {
   SizeType,
   Textarea,
 } from '@vkontakte/vkui';
-import { modalStore } from '../stores/modalStore';
+import { modalStore, showToastError, showToastSuccess } from '../stores/modalStore';
 import { recTypeOptions } from '../constants';
 import { insertRecRow, loadRecData, recStore, updateRecRow } from '../stores/recStore';
 import { IRecItem } from '../../commonConstants';
@@ -60,7 +60,9 @@ export const ModalPageRecEdit = ({ id }: Props) => {
         .then((success) => {
           if (success) {
             modalStore.closeModal();
+            showToastSuccess();
           } else {
+            showToastError();
             setFormTitleStatus('error');
           }
           return true;
