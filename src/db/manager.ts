@@ -1,14 +1,6 @@
 import path from 'path';
-import {
-  closeFileDatabase,
-  execQuery,
-  formatSQLDate,
-  getQuery,
-  getQueryAll,
-  openFileDatabase,
-  prepareQuery,
-} from './engine';
-import { IRecItem } from '../commonConstants';
+import { closeFileDatabase, execQuery, getQuery, getQueryAll, openFileDatabase, prepareQuery } from './engine';
+import { formatSQLDate, IRecItem } from '../commonConstants';
 import { SQL_INSERT_REC_ROW, SQL_SELECT_REC_ROW, SQL_SELECT_REC_ROWS, SQL_UPDATE_REC_ROW } from './sqlConstants';
 
 const dbTestFile = '../test.db';

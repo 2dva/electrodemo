@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Button,
   ButtonGroup,
@@ -16,7 +16,7 @@ import {
 } from '@vkontakte/vkui';
 import { modalStore, showToastError, showToastSuccess } from '../stores/modalStore';
 import { insertRecRow, loadRecData, recStore, updateRecRow } from '../stores/recStore';
-import { CategoryArray, IRecItem } from '../../commonConstants';
+import { CategoryArray, formatSQLDate, IRecItem } from '../../commonConstants';
 
 interface Props {
   id: string;
@@ -104,15 +104,29 @@ export const ModalPageRecEdit = ({ id }: Props) => {
             clickOkHandler();
           }}
         >
-          <FormItem top="Title" status={formTitleStatus}>
-            <Input
-              type="text"
-              sizeY={SizeType.COMPACT}
-              value={recValue.title}
-              autoFocus
-              onChange={(e) => setRecValue({ ...recValue, title: e.target.value })}
-            />
-          </FormItem>
+          <FormLayoutGroup mode="horizontal">
+            <FormItem top="Title" status={formTitleStatus}>
+              <Input
+                type="text"
+                sizeY={SizeType.COMPACT}
+                value={recValue.title}
+                autoFocus
+                onChange={(e) => setRecValue({ ...recValue, title: e.target.value })}
+              />
+            </FormItem>
+            <FormItem style={{ flexBasis: '80px', flexGrow: 0 }}>
+              <Button
+                size="m"
+                onClick={(e) => {
+                  e.preventDefault();
+                  const title = `[${formatSQLDate(recValue.date)}] ${CategoryArray[recValue.catId]}`;
+                  setRecValue({ ...recValue, title });
+                }}
+              >
+                A
+              </Button>
+            </FormItem>
+          </FormLayoutGroup>
           <FormLayoutGroup mode="horizontal">
             <FormItem top="Date">
               <DateInput

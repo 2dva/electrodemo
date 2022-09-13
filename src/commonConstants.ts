@@ -39,3 +39,7 @@ export interface IRecItem {
 }
 
 export const CategoryArray = ['journal', 'event', 'note', 'news'];
+
+export const formatSQLDate = (date: Date = new Date()): string => {
+  return date.toJSON().slice(0, 10);
+};
