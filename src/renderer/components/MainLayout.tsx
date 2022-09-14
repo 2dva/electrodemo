@@ -20,7 +20,7 @@ export const MainLayout = observer(() => {
     <SplitLayout modal={modal}>
       <SplitCol>
         <TabsContainer />
-        <Toast />;
+        <Toast />
       </SplitCol>
     </SplitLayout>
   );
