@@ -1,4 +1,5 @@
 import { Button, ButtonGroup, Div, FormItem, FormLayout, Group, ModalPage, ModalPageHeader } from '@vkontakte/vkui';
+import { CSSProperties } from 'react';
 import { modalStore } from '../stores/modalStore';
 
 interface Props {
@@ -12,19 +13,16 @@ export const ModalPageWelcome = ({ id }: Props) => {
   const clickCancelHandler = () => {
     window.close();
   };
+  const alignCenterStyle: CSSProperties = { textAlign: 'center' };
 
   return (
-    <ModalPage
-      id={id}
-      header={<ModalPageHeader style={{ textAlign: 'center' }}>Welcome</ModalPageHeader>}
-      hideCloseButton
-    >
+    <ModalPage id={id} header={<ModalPageHeader style={alignCenterStyle}>Welcome</ModalPageHeader>} hideCloseButton>
       <Group>
         <FormLayout>
-          <Div style={{ textAlign: 'center', width: '100%' }}>
-            <span style={{ textAlign: 'center', width: '100%' }}>Some text goes here</span>
+          <Div style={alignCenterStyle}>
+            <span>Some text goes here</span>
           </Div>
-          <FormItem>
+          <FormItem style={alignCenterStyle}>
             <ButtonGroup>
               <Button mode="primary" onClick={clickOkHandler} style={{ width: '90px' }}>
                 OK
