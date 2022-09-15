@@ -65,3 +65,10 @@ class AppStore {
 }
 
 export const appStore = new AppStore();
+
+export const execDB = (query: string) => {
+  return executeRemoteFunction('execDB', { query }).then((data) => {
+    console.log(`execDB result=`, data);
+    return data;
+  });
+};

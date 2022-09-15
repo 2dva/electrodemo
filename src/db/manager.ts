@@ -78,6 +78,18 @@ export const dbInsertRecTestRows = (n: number) => {
   });
 };
 
+export const dbExecQuery = (query: string) => {
+  console.log(`DB:Manager:dbExecQuery query=${query}`);
+  return getQueryAll(query)
+    .then((result) => {
+      console.log('res:', result);
+      return result;
+    })
+    .catch((err) => {
+      console.log(`Async Database query tool error`, err);
+    });
+};
+
 export const closeDB = () => {
   return closeFileDatabase();
 };

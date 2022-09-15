@@ -18,7 +18,7 @@ import { observer } from 'mobx-react';
 import { useState } from 'react';
 import { Icon24Cancel } from '@vkontakte/icons';
 import { IPanelProps } from '../constants';
-import { MODAL_PAGE_OPEN_DB, modalStore } from '../stores/modalStore';
+import { MODAL_PAGE_OPEN_DB, MODAL_PAGE_QUERY_TOOL, modalStore } from '../stores/modalStore';
 import { appStore } from '../stores/appStore';
 import { insertRecTestRows } from '../stores/recStore';
 
@@ -33,6 +33,10 @@ export const PanelSettings = observer(({ id }: IPanelProps) => {
 
   const insertTestRecords = () => {
     insertRecTestRows(count);
+  };
+
+  const openQueryTool = () => {
+    modalStore.openModal(MODAL_PAGE_QUERY_TOOL);
   };
 
   return (
@@ -94,6 +98,11 @@ export const PanelSettings = observer(({ id }: IPanelProps) => {
             />
           </FormItem>
         </FormLayoutGroup>
+        <FormItem>
+          <Button onClick={openQueryTool} disabled={!appStore.dbinfo.connected}>
+            Query tool
+          </Button>
+        </FormItem>
       </Group>
       <Group header={<Header mode="secondary">Appearance</Header>}>
         <FormItem>
