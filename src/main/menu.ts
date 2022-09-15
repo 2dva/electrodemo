@@ -114,11 +114,10 @@ export default class MenuBuilder {
         },
         { type: 'separator' },
         {
-          label: 'Tools...',
+          label: 'Query tool',
           accelerator: 'Shift+Command+T',
-          enabled: false,
           click: () => {
-            this.sendCommandToRender(Commands.COMMAND_DB_TOOLS);
+            this.sendCommandToRender(Commands.COMMAND_DB_QUERY);
           },
         },
         { type: 'separator' },

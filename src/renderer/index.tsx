@@ -1,7 +1,7 @@
 import { createRoot } from 'react-dom/client';
 import { autorun } from 'mobx';
 import App from './App';
-import { MODAL_PAGE_OPEN_DB, MODAL_PAGE_WELCOME, modalStore } from './stores/modalStore';
+import { MODAL_PAGE_OPEN_DB, MODAL_PAGE_QUERY_TOOL, MODAL_PAGE_WELCOME, modalStore } from './stores/modalStore';
 import { appStore } from './stores/appStore';
 import { executeRemoteFunction, setRenderer } from './simpleBridge';
 import { Channels, Commands, IFileInfo } from '../commonConstants';
@@ -28,6 +28,9 @@ ipcr.on(Channels.IPC_COMMAND_CHANNEL, (...args) => {
       break;
     case Commands.COMMAND_DB_CLOSE:
       appStore.closeDB();
+      break;
+    case Commands.COMMAND_DB_QUERY:
+      modalStore.openModal(MODAL_PAGE_QUERY_TOOL);
       break;
     case Commands.COMMAND_DB_INFO:
       appStore.setFileInfo(data as IFileInfo);

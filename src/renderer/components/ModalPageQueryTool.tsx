@@ -23,11 +23,13 @@ export const ModalPageQueryTool = ({ id }: Props) => {
   const [queryOutput, setQueryOutput] = useState<string>('');
 
   const clickClear = () => {
-    if (queryInput.current) {
-      queryInput.current.value = '';
-      queryInput.current.focus();
-    }
     setQueryOutput('');
+    queryInput.current?.focus();
+    setTimeout(() => {
+      if (queryInput.current) {
+        queryInput.current.value = '';
+      }
+    }, 10);
   };
 
   const clickOkHandler = () => {
