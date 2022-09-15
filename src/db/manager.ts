@@ -6,8 +6,8 @@ import { SQL_INSERT_REC_ROW, SQL_SELECT_REC_ROW, SQL_SELECT_REC_ROWS, SQL_UPDATE
 const dbTestFile = '../test.db';
 const dbTestFilePath = path.resolve(__dirname, dbTestFile);
 
-export const dbFetchRecRows = () => {
-  return getQueryAll(SQL_SELECT_REC_ROWS)
+export const dbFetchRecRows = (limit = -1) => {
+  return getQueryAll(SQL_SELECT_REC_ROWS, [limit])
     .then((rows) => {
       return rows;
     })
@@ -80,7 +80,7 @@ export const dbInsertRecTestRows = (n: number) => {
 
 export const dbExecQuery = (query: string) => {
   console.log(`DB:Manager:dbExecQuery query=${query}`);
-  return getQueryAll(query)
+  return getQueryAll(query, [])
     .then((result) => {
       console.log('res:', result);
       return result;

@@ -2,6 +2,7 @@ import { makeAutoObservable } from 'mobx';
 import { executeRemoteFunction } from '../simpleBridge';
 import { IRecDB, IRecItem } from '../../commonConstants';
 import { MODAL_PAGE_EDIT_REC, modalStore } from './modalStore';
+import { DEFAULT_ROW_LIMIT } from '../constants';
 
 export class RecStore {
   rows: Array<IRecDB> = [];
@@ -41,8 +42,8 @@ export const disconnectRec = () => {
   recStore.setRows([]);
 };
 
-export const fetchRecRows = () => {
-  executeRemoteFunction('fetchRecRows', {})
+export const fetchRecRows = (limit: number = DEFAULT_ROW_LIMIT) => {
+  executeRemoteFunction('fetchRecRows', { limit })
     .then((result) => {
       return recStore.setRows(result as Array<IRecDB>);
     })
@@ -51,7 +52,8 @@ export const fetchRecRows = () => {
 
 export const loadRecData = (recId: number) => {
   return executeRemoteFunction('fetchRecRow', { recId })
-    .then((result: any) => {
+    .then((value) => {
+      const result = value as IRecDB;
       console.log('RecEdit:got data:', result);
       const recItem: IRecItem = {
         recId: result.rec_id,

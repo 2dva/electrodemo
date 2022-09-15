@@ -31,8 +31,8 @@ const Api: IAPI = {
     return dbFetchRecRow(recId as number);
   },
 
-  fetchRecRows: () => {
-    return dbFetchRecRows();
+  fetchRecRows: ({ limit }) => {
+    return dbFetchRecRows(limit as number);
   },
 
   insertRecRow: ({ catId, created, title, text, tags, date }) => {

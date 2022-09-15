@@ -26,7 +26,7 @@ export interface IRecDB {
   title: string;
   text: string;
   tags: string;
-  date?: string;
+  date: string;
 }
 
 export interface IRecItem {

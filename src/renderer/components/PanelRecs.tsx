@@ -14,7 +14,7 @@ import { observer } from 'mobx-react';
 import { autorun } from 'mobx';
 import { useEffect, useState } from 'react';
 import { Icon24Add } from '@vkontakte/icons';
-import { IPanelProps } from '../constants';
+import { DEFAULT_ROW_LIMIT, IPanelProps } from '../constants';
 import { disconnectRec, fetchRecRows, openAddRecDialog, openEditRecDialog, recStore } from '../stores/recStore';
 import { appStore } from '../stores/appStore';
 import { CategoryArray, IRecDB } from '../../commonConstants';
@@ -38,25 +38,24 @@ const recordTypeOptions = CategoryArray.map((val, index) => {
 recordTypeOptions.unshift({ label: 'all', value: -1 });
 
 const visibleRowCountOptions = [
-  { label: 'All', value: 'all' },
-  { label: '250', value: '250' },
-  { label: '100', value: '100' },
-  { label: '25', value: '25' },
+  { label: 'All', value: -1 },
+  { label: '250', value: 250 },
+  { label: '100', value: 100 },
+  { label: '25', value: 25 },
 ];
-const defaultVisibleRowCount = '25';
 
 export const PanelRecs = observer(({ id }: IPanelProps) => {
-  useEffect(() => {
-    fetchRecRows();
-  }, []);
-
   const onRowDClick = (row: IRecDB) => {
     if (row.rec_id) {
       openEditRecDialog(row.rec_id);
     }
   };
 
-  const [rowCount, setRowCount] = useState(defaultVisibleRowCount);
+  const [rowCount, setRowCount] = useState(DEFAULT_ROW_LIMIT);
+
+  useEffect(() => {
+    fetchRecRows(rowCount);
+  }, [rowCount]);
 
   return (
     <Panel id={id}>
@@ -83,22 +82,13 @@ export const PanelRecs = observer(({ id }: IPanelProps) => {
             <SegmentedControl
               style={{ width: '250px', height: '30px' }}
               size="m"
-              name="rowCount"
               value={rowCount}
-              onChange={(val) => setRowCount(val as string)}
+              onChange={(val) => setRowCount(val as number)}
               options={visibleRowCountOptions}
             />
           </FormItem>
           <FormItem>
-            <CustomSelect
-              options={recordTypeOptions}
-              defaultValue="-1"
-              align="left"
-              // style={{ width: '250px', height: '40px' }}
-              sizeY={SizeType.COMPACT}
-              dropdownOffsetDistance={5}
-              mode="plain"
-            />
+            <CustomSelect options={recordTypeOptions} defaultValue="-1" sizeY={SizeType.COMPACT} />
           </FormItem>
         </FormLayoutGroup>
       </Group>
