@@ -5,6 +5,7 @@ import {
   FormItem,
   FormLayoutGroup,
   Group,
+  Input,
   Panel,
   SegmentedControl,
   SizeType,
@@ -13,7 +14,7 @@ import DataGrid, { FormatterProps } from 'react-data-grid';
 import { observer } from 'mobx-react';
 import { autorun } from 'mobx';
 import { useEffect, useState } from 'react';
-import { Icon24Add } from '@vkontakte/icons';
+import { Icon24Add, Icon24Cancel } from '@vkontakte/icons';
 import { DEFAULT_ROW_LIMIT, IPanelProps } from '../constants';
 import { disconnectRec, fetchRecRows, openAddRecDialog, openEditRecDialog, recStore } from '../stores/recStore';
 import { appStore } from '../stores/appStore';
@@ -32,10 +33,10 @@ const columns = [
 
 const dgDarkClassName = 'rdg-dark';
 
-const recordTypeOptions = CategoryArray.map((val, index) => {
+const categoryOptions = CategoryArray.map((val, index) => {
   return { label: val, value: index };
 });
-recordTypeOptions.unshift({ label: 'all', value: -1 });
+categoryOptions.unshift({ label: 'all', value: -1 });
 
 const visibleRowCountOptions = [
   { label: 'All', value: -1 },
@@ -45,10 +46,16 @@ const visibleRowCountOptions = [
 ];
 
 export const PanelRecs = observer(({ id }: IPanelProps) => {
+  const [category, setCategory] = useState<number>(-1);
+
   const onRowDClick = (row: IRecDB) => {
     if (row.rec_id) {
       openEditRecDialog(row.rec_id);
     }
+  };
+
+  const resetFilters = () => {
+    setCategory(-1);
   };
 
   const [rowCount, setRowCount] = useState(DEFAULT_ROW_LIMIT);
@@ -78,17 +85,36 @@ export const PanelRecs = observer(({ id }: IPanelProps) => {
       </Group>
       <Group>
         <FormLayoutGroup mode="horizontal">
-          <FormItem bottom={`Show ${rowCount} rows`}>
+          <FormItem style={{ flexBasis: '250px', flexGrow: 0 }}>
             <SegmentedControl
-              style={{ width: '250px', height: '30px' }}
+              style={{ width: '250px' }}
               size="m"
               value={rowCount}
               onChange={(val) => setRowCount(val as number)}
               options={visibleRowCountOptions}
             />
           </FormItem>
+          <FormItem style={{ flexBasis: '120px', flexGrow: 0 }}>
+            <CustomSelect
+              options={categoryOptions}
+              value={category}
+              onChange={(e) => setCategory(+e.target.value)}
+              sizeY={SizeType.COMPACT}
+            />
+          </FormItem>
           <FormItem>
-            <CustomSelect options={recordTypeOptions} defaultValue="-1" sizeY={SizeType.COMPACT} />
+            <Input type="text" placeholder="Search tags" sizeY={SizeType.COMPACT} />
+          </FormItem>
+          <FormItem style={{ flexBasis: '60px', flexGrow: 0 }}>
+            <Button
+              size="m"
+              sizeX={SizeType.REGULAR}
+              style={{ width: '36px' }}
+              mode="outline"
+              appearance="neutral"
+              onClick={resetFilters}
+              before={<Icon24Cancel />}
+            />
           </FormItem>
         </FormLayoutGroup>
       </Group>

@@ -92,9 +92,7 @@ export const PanelSettings = observer(({ id }: IPanelProps) => {
               sizeY={SizeType.COMPACT}
               defaultValue={10}
               mode="plain"
-              onChange={(e) => {
-                setCount(+e.currentTarget.value);
-              }}
+              onChange={(e) => setCount(+e.currentTarget.value)}
             />
           </FormItem>
         </FormLayoutGroup>

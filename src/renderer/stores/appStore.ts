@@ -9,6 +9,7 @@ interface DBInfo {
 }
 
 interface ISettings {
+  demomode: boolean;
   dark: boolean;
   restoreOnStartup: boolean;
 }
@@ -21,12 +22,14 @@ class AppStore {
   };
 
   settings: ISettings = {
+    demomode: false,
     dark: false,
     restoreOnStartup: false,
   };
 
   constructor() {
     makeAutoObservable(this);
+    this.settings.demomode = window.WORKMODE === 'demo';
     this.settings.dark = localStorage.getItem('settingDark') === '1';
     this.settings.restoreOnStartup = localStorage.getItem('settingRestore') === '1';
   }

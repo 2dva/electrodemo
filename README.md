@@ -20,6 +20,14 @@ cd your-project-name
 npm install
 ```
 
+## Demo mode
+
+Start the app in demo mode:
+
+```bash
+npm run demo
+```
+
 ## Starting Development
 
 Start the app in the `dev` environment:

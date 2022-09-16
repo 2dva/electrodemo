@@ -21,6 +21,8 @@ type IFormStatus = 'default' | 'error' | 'valid';
 export const ModalPageQueryTool = ({ id }: Props) => {
   const queryInput = useRef<HTMLTextAreaElement>(null);
   const [queryOutput, setQueryOutput] = useState<string>('');
+  const [loading, setLoading] = useState(false);
+  const [formStatus, setFormStatus] = useState<IFormStatus>('default');
 
   const clickClear = () => {
     setQueryOutput('');
@@ -33,11 +35,14 @@ export const ModalPageQueryTool = ({ id }: Props) => {
   };
 
   const clickOkHandler = () => {
+    setLoading(true);
     const queryString = queryInput.current?.value;
     if (queryString) {
       execDB(queryString)
         .then((result) => {
-          return setQueryOutput(JSON.stringify(result));
+          setLoading(false);
+          setFormStatus(result === undefined ? 'error' : 'default');
+          return setQueryOutput(result === undefined ? '[ERROR]' : JSON.stringify(result));
         })
         .catch(() => {});
     }
@@ -51,11 +56,11 @@ export const ModalPageQueryTool = ({ id }: Props) => {
             <Textarea autoFocus getRef={queryInput} rows={3} sizeY={SizeType.COMPACT} />
           </FormItem>
           <FormItem top="Result">
-            <Textarea value={queryOutput} rows={3} sizeY={SizeType.COMPACT} />
+            <Textarea value={queryOutput} rows={3} sizeY={SizeType.COMPACT} status={formStatus} />
           </FormItem>
           <FormItem>
             <ButtonGroup>
-              <Button mode="primary" onClick={clickOkHandler}>
+              <Button mode="primary" onClick={clickOkHandler} loading={loading}>
                 Exec
               </Button>
               <Button mode="outline" onClick={clickClear}>

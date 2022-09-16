@@ -10,7 +10,6 @@ const container = document.getElementById('root')!;
 const root = createRoot(container);
 root.render(<App />);
 
-const SHOW_WELCOME = false;
 const ipcr = window.electron.ipcRenderer;
 setRenderer(ipcr);
 
@@ -48,7 +47,7 @@ ipcr
 // ipcr.sendMessage(Channels.IPC_EXAMPLE_CHANNEL, ['ping']);
 ipcr.sendMessage(Channels.IPC_EVENT_CHANNEL, ['ready']);
 
-if (SHOW_WELCOME) {
+if (appStore.settings.demomode) {
   modalStore.openModal(MODAL_PAGE_WELCOME);
 } else if (localStorage.getItem('settingRestore') === '1') {
   const lastConnectionFilename = localStorage.getItem('settingLastFilename');
