@@ -139,9 +139,6 @@ const configuration: webpack.Configuration = {
       env: process.env.NODE_ENV,
       isDevelopment: process.env.NODE_ENV !== 'production',
       nodeModules: webpackPaths.appNodeModulesPath,
-      templateParameters: {
-        workmode: process.argv.includes('demomode') ? 'demo' : 'default',
-      },
     }),
   ],
 

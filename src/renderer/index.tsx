@@ -6,6 +6,8 @@ import { appStore } from './stores/appStore';
 import { executeRemoteFunction, setRenderer } from './simpleBridge';
 import { Channels, Commands, IFileInfo } from '../commonConstants';
 
+const demoMode = window.electron.workMode === 'demo';
+
 const container = document.getElementById('root')!;
 const root = createRoot(container);
 root.render(<App />);
@@ -47,7 +49,7 @@ ipcr
 // ipcr.sendMessage(Channels.IPC_EXAMPLE_CHANNEL, ['ping']);
 ipcr.sendMessage(Channels.IPC_EVENT_CHANNEL, ['ready']);
 
-if (appStore.settings.demomode) {
+if (demoMode) {
   modalStore.openModal(MODAL_PAGE_WELCOME);
 } else if (localStorage.getItem('settingRestore') === '1') {
   const lastConnectionFilename = localStorage.getItem('settingLastFilename');

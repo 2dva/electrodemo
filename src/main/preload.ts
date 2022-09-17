@@ -2,6 +2,7 @@ import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
 import { Channels } from '../commonConstants';
 
 contextBridge.exposeInMainWorld('electron', {
+  workMode: process.env.WORKMODE || 'default',
   ipcRenderer: {
     sendMessage(channel: Channels, args: unknown[]) {
       ipcRenderer.send(channel, args);

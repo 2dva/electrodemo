@@ -29,7 +29,7 @@ class AppStore {
 
   constructor() {
     makeAutoObservable(this);
-    this.settings.demomode = window.WORKMODE === 'demo';
+    this.settings.demomode = window.electron.workMode === 'demo';
     this.settings.dark = localStorage.getItem('settingDark') === '1';
     this.settings.restoreOnStartup = localStorage.getItem('settingRestore') === '1';
   }
