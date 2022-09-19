@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { Button, ButtonGroup, FormItem, FormLayout, Group, Input, ModalPage, ModalPageHeader } from '@vkontakte/vkui';
 import { appStore } from '../stores/appStore';
 import { modalStore } from '../stores/modalStore';
@@ -31,10 +31,6 @@ export const ModalPageOpenDB = ({ id }: Props) => {
     }
   };
 
-  useEffect(() => {
-    textInput.current?.focus();
-  }, []);
-
   return (
     <ModalPage id={id} header={<ModalPageHeader>Open DB File</ModalPageHeader>} hideCloseButton>
       <Group>
@@ -46,6 +42,7 @@ export const ModalPageOpenDB = ({ id }: Props) => {
         >
           <FormItem top="Path to file" status={formStatus}>
             <Input
+              autoFocus
               getRef={textInput}
               type="text"
               defaultValue={lastInputFile}

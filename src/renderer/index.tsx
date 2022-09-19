@@ -1,16 +1,17 @@
 import { createRoot } from 'react-dom/client';
 import { autorun } from 'mobx';
 import App from './App';
-import { MODAL_PAGE_OPEN_DB, MODAL_PAGE_WELCOME, modalStore } from './stores/modalStore';
+import { MODAL_PAGE_OPEN_DB, MODAL_PAGE_QUERY_TOOL, MODAL_PAGE_WELCOME, modalStore } from './stores/modalStore';
 import { appStore } from './stores/appStore';
 import { executeRemoteFunction, setRenderer } from './simpleBridge';
-import { Channels, Commands, IFileInfo } from '../commonConstants';
+import { Channels, Commands, DEMO_DBFILE_PATH, IFileInfo } from '../commonConstants';
+
+const demoMode = window.electron.workMode === 'demo';
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
 root.render(<App />);
 
-const SHOW_WELCOME = false;
 const ipcr = window.electron.ipcRenderer;
 setRenderer(ipcr);
 
@@ -29,6 +30,9 @@ ipcr.on(Channels.IPC_COMMAND_CHANNEL, (...args) => {
     case Commands.COMMAND_DB_CLOSE:
       appStore.closeDB();
       break;
+    case Commands.COMMAND_DB_QUERY:
+      modalStore.openModal(MODAL_PAGE_QUERY_TOOL);
+      break;
     case Commands.COMMAND_DB_INFO:
       appStore.setFileInfo(data as IFileInfo);
       break;
@@ -45,8 +49,10 @@ ipcr
 // ipcr.sendMessage(Channels.IPC_EXAMPLE_CHANNEL, ['ping']);
 ipcr.sendMessage(Channels.IPC_EVENT_CHANNEL, ['ready']);
 
-if (SHOW_WELCOME) {
+if (demoMode) {
+  console.log('@@@@@@@@@@@ DEMO MODE @@@@@@@@@@');
   modalStore.openModal(MODAL_PAGE_WELCOME);
+  executeRemoteFunction('openDB', { filePath: DEMO_DBFILE_PATH }).catch(() => {});
 } else if (localStorage.getItem('settingRestore') === '1') {
   const lastConnectionFilename = localStorage.getItem('settingLastFilename');
   if (lastConnectionFilename) {

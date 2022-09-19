@@ -1,6 +1,7 @@
 import { ipcMain } from 'electron';
 import {
   closeDB,
+  dbExecQuery,
   dbFetchRecRow,
   dbFetchRecRows,
   dbInsertRecRow,
@@ -18,6 +19,10 @@ const Api: IAPI = {
     return openDBFile(filePath as string);
   },
 
+  execDB: ({ query }) => {
+    return dbExecQuery(query as string);
+  },
+
   closeDB: () => {
     return closeDB();
   },
@@ -26,8 +31,8 @@ const Api: IAPI = {
     return dbFetchRecRow(recId as number);
   },
 
-  fetchRecRows: () => {
-    return dbFetchRecRows();
+  fetchRecRows: ({ limit }) => {
+    return dbFetchRecRows(limit as number);
   },
 
   insertRecRow: ({ catId, created, title, text, tags, date }) => {

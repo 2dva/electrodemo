@@ -1,3 +1,5 @@
+export const DEMO_DBFILE_PATH = './demo.db';
+
 export enum Channels {
   IPC_COMMAND_CHANNEL = 'ipc-command',
   IPC_EVENT_CHANNEL = 'ipc-event',
@@ -9,6 +11,7 @@ export enum Commands {
   COMMAND_DB_OPEN = 'COMMAND_DB_OPEN',
   COMMAND_DB_CLOSE = 'COMMAND_DB_CLOSE',
   COMMAND_DB_TOOLS = 'COMMAND_DB_TOOLS',
+  COMMAND_DB_QUERY = 'COMMAND_DB_QUERY',
   COMMAND_DB_INFO = 'COMMAND_DB_INFO',
 }
 
@@ -25,7 +28,7 @@ export interface IRecDB {
   title: string;
   text: string;
   tags: string;
-  date?: string;
+  date: string;
 }
 
 export interface IRecItem {

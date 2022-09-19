@@ -1,4 +1,4 @@
-export const SQL_SELECT_REC_ROWS = 'SELECT rec_id, date, cat_id, created, title FROM rec ORDER BY rec_id DESC';
+export const SQL_SELECT_REC_ROWS = 'SELECT rec_id, date, cat_id, created, title FROM rec ORDER BY rec_id DESC LIMIT ?';
 
 export const SQL_SELECT_REC_ROW = 'SELECT * FROM rec WHERE rec_id = ?';
 

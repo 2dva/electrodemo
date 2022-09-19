@@ -1,10 +1,14 @@
 import {
+  ActionSheet,
+  ActionSheetDefaultIosCloseItem,
+  ActionSheetItem,
   Button,
   CustomSelect,
   Div,
   FormItem,
   FormLayoutGroup,
   Group,
+  Input,
   Panel,
   SegmentedControl,
   SizeType,
@@ -12,15 +16,63 @@ import {
 import DataGrid, { FormatterProps } from 'react-data-grid';
 import { observer } from 'mobx-react';
 import { autorun } from 'mobx';
-import { useEffect, useState } from 'react';
-import { Icon24Add } from '@vkontakte/icons';
-import { IPanelProps } from '../constants';
+import { ReactNode, useEffect, useState } from 'react';
+import { Icon16MoreVertical, Icon24Add, Icon24Cancel } from '@vkontakte/icons';
+import { ToggleRef } from '@vkontakte/vkui/dist/components/ActionSheet/types';
+import { DEFAULT_ROW_LIMIT, IPanelProps } from '../constants';
 import { disconnectRec, fetchRecRows, openAddRecDialog, openEditRecDialog, recStore } from '../stores/recStore';
 import { appStore } from '../stores/appStore';
 import { CategoryArray, IRecDB } from '../../commonConstants';
+import { modalStore } from '../stores/modalStore';
+
+const dgDarkClassName = 'rdg-dark';
+
+const categoryOptions = CategoryArray.map((val, index) => {
+  return { label: val, value: index };
+});
+categoryOptions.unshift({ label: 'all', value: -1 });
+
+const visibleRowCountOptions = [
+  { label: 'All', value: -1 },
+  { label: '250', value: 250 },
+  { label: '100', value: 100 },
+  { label: '25', value: 25 },
+];
+
+const onClose = () => modalStore.closePopout();
+
+const showRowMenu = (targetNode: EventTarget, recId: number | undefined) => {
+  console.log('context menu for row', recId);
+  modalStore.openPopout(
+    <ActionSheet
+      iosCloseItem={<ActionSheetDefaultIosCloseItem />}
+      onClose={onClose}
+      toggleRef={targetNode as ToggleRef}
+    >
+      <ActionSheetItem autoclose>Add record</ActionSheetItem>
+      <ActionSheetItem autoclose>Edit record</ActionSheetItem>
+      <ActionSheetItem autoclose>Delete record</ActionSheetItem>
+    </ActionSheet>
+  );
+};
 
 const catFormatter = (column: FormatterProps<IRecDB>): string => {
   return CategoryArray[column.row.cat_id] || '[unknown]';
+};
+
+const actionFormatter = (column: FormatterProps<IRecDB>): ReactNode => {
+  const recId = column.row.rec_id;
+  return (
+    <Button
+      before={<Icon16MoreVertical />}
+      sizeY={SizeType.COMPACT}
+      mode="tertiary"
+      appearance="neutral"
+      value={recId}
+      data={`${recId}`}
+      onClick={(e) => showRowMenu(e.target, recId)}
+    />
+  );
 };
 
 const columns = [
@@ -28,27 +80,12 @@ const columns = [
   { key: 'date', name: 'Day', width: 100 },
   { key: 'cat_id', name: 'Category', width: 120, formatter: catFormatter },
   { key: 'title', name: 'Title' },
+  { key: 'action', name: '', width: 80, formatter: actionFormatter },
 ];
-
-const dgDarkClassName = 'rdg-dark';
-
-const recordTypeOptions = CategoryArray.map((val, index) => {
-  return { label: val, value: index };
-});
-recordTypeOptions.unshift({ label: 'all', value: -1 });
-
-const visibleRowCountOptions = [
-  { label: 'All', value: 'all' },
-  { label: '250', value: '250' },
-  { label: '100', value: '100' },
-  { label: '25', value: '25' },
-];
-const defaultVisibleRowCount = '25';
 
 export const PanelRecs = observer(({ id }: IPanelProps) => {
-  useEffect(() => {
-    fetchRecRows();
-  }, []);
+  const [category, setCategory] = useState<number>(-1);
+  const [rowCount, setRowCount] = useState(DEFAULT_ROW_LIMIT);
 
   const onRowDClick = (row: IRecDB) => {
     if (row.rec_id) {
@@ -56,7 +93,13 @@ export const PanelRecs = observer(({ id }: IPanelProps) => {
     }
   };
 
-  const [rowCount, setRowCount] = useState(defaultVisibleRowCount);
+  const resetFilters = () => {
+    setCategory(-1);
+  };
+
+  useEffect(() => {
+    fetchRecRows(rowCount);
+  }, [rowCount]);
 
   return (
     <Panel id={id}>
@@ -79,25 +122,35 @@ export const PanelRecs = observer(({ id }: IPanelProps) => {
       </Group>
       <Group>
         <FormLayoutGroup mode="horizontal">
-          <FormItem bottom={`Show ${rowCount} rows`}>
+          <FormItem style={{ flexBasis: '250px', flexGrow: 0 }}>
             <SegmentedControl
-              style={{ width: '250px', height: '30px' }}
+              style={{ width: '250px' }}
               size="m"
-              name="rowCount"
               value={rowCount}
-              onChange={(val) => setRowCount(val as string)}
+              onChange={(val) => setRowCount(val as number)}
               options={visibleRowCountOptions}
             />
           </FormItem>
-          <FormItem>
+          <FormItem style={{ flexBasis: '120px', flexGrow: 0 }}>
             <CustomSelect
-              options={recordTypeOptions}
-              defaultValue="-1"
-              align="left"
-              // style={{ width: '250px', height: '40px' }}
+              options={categoryOptions}
+              value={category}
+              onChange={(e) => setCategory(+e.target.value)}
               sizeY={SizeType.COMPACT}
-              dropdownOffsetDistance={5}
-              mode="plain"
+            />
+          </FormItem>
+          <FormItem>
+            <Input type="text" placeholder="Search tags" sizeY={SizeType.COMPACT} />
+          </FormItem>
+          <FormItem style={{ flexBasis: '60px', flexGrow: 0 }}>
+            <Button
+              size="m"
+              sizeX={SizeType.REGULAR}
+              style={{ width: '36px' }}
+              mode="outline"
+              appearance="neutral"
+              onClick={resetFilters}
+              before={<Icon24Cancel />}
             />
           </FormItem>
         </FormLayoutGroup>

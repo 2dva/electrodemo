@@ -20,7 +20,7 @@ export const ModalPageWelcome = ({ id }: Props) => {
       <Group>
         <FormLayout>
           <Div style={alignCenterStyle}>
-            <span>Some text goes here</span>
+            <span>You are entering demo mode!</span>
           </Div>
           <FormItem style={alignCenterStyle}>
             <ButtonGroup>

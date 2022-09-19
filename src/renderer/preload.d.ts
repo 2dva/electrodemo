@@ -11,6 +11,7 @@ declare global {
   interface Window {
     electron: {
       ipcRenderer: IExposedRenderer;
+      workMode: string;
     };
   }
 }

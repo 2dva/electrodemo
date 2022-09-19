@@ -70,9 +70,9 @@ export const getQuery = (query: string, params: Array<unknown>): Promise<unknown
   });
 };
 
-export const getQueryAll = (query: string): Promise<Array<unknown>> => {
+export const getQueryAll = (query: string, params: Array<unknown>): Promise<Array<unknown>> => {
   return new Promise((resolve, reject) => {
-    engine?.all(query, (err: unknown, rows: unknown[]) => {
+    engine?.all(query, params, (err: unknown, rows: unknown[]) => {
       if (err) {
         console.log(`getQueryAll: query error`, err);
         reject(err);
