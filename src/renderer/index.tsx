@@ -4,7 +4,7 @@ import App from './App';
 import { MODAL_PAGE_OPEN_DB, MODAL_PAGE_QUERY_TOOL, MODAL_PAGE_WELCOME, modalStore } from './stores/modalStore';
 import { appStore } from './stores/appStore';
 import { executeRemoteFunction, setRenderer } from './simpleBridge';
-import { Channels, Commands, IFileInfo } from '../commonConstants';
+import { Channels, Commands, DEMO_DBFILE_PATH, IFileInfo } from '../commonConstants';
 
 const demoMode = window.electron.workMode === 'demo';
 
@@ -52,6 +52,7 @@ ipcr.sendMessage(Channels.IPC_EVENT_CHANNEL, ['ready']);
 if (demoMode) {
   console.log('@@@@@@@@@@@ DEMO MODE @@@@@@@@@@');
   modalStore.openModal(MODAL_PAGE_WELCOME);
+  executeRemoteFunction('openDB', { filePath: DEMO_DBFILE_PATH }).catch(() => {});
 } else if (localStorage.getItem('settingRestore') === '1') {
   const lastConnectionFilename = localStorage.getItem('settingLastFilename');
   if (lastConnectionFilename) {

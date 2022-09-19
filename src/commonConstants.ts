@@ -1,3 +1,5 @@
+export const DEMO_DBFILE_PATH = './demo.db';
+
 export enum Channels {
   IPC_COMMAND_CHANNEL = 'ipc-command',
   IPC_EVENT_CHANNEL = 'ipc-event',
