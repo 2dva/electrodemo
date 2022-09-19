@@ -1,4 +1,6 @@
 import { makeAutoObservable } from 'mobx';
+import { ReactNode } from 'react';
+import { ActionSheet, ActionSheetDefaultIosCloseItem, ActionSheetItem } from '@vkontakte/vkui';
 
 export const MODAL_PAGE_WELCOME = 'page_welcome';
 export const MODAL_PAGE_OPEN_DB = 'page_open_db';
@@ -19,6 +21,11 @@ interface IToast {
   status: IToastStatus;
 }
 
+interface IPopout {
+  open: boolean;
+  body: ReactNode | null;
+}
+
 export class ModalStore {
   modal: Modal = {
     open: false,
@@ -30,6 +37,11 @@ export class ModalStore {
     open: false,
     text: null,
     status: 'default',
+  };
+
+  popout: IPopout = {
+    open: false,
+    body: null,
   };
 
   constructor() {
@@ -55,6 +67,16 @@ export class ModalStore {
 
   hideToast = () => {
     this.toast.open = false;
+  };
+
+  openPopout = (node: ReactNode) => {
+    this.popout.body = node;
+    this.popout.open = true;
+  };
+
+  closePopout = () => {
+    this.popout.open = false;
+    this.popout.body = null;
   };
 }
 

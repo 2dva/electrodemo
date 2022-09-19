@@ -16,7 +16,7 @@ import { ModalPageQueryTool } from './ModalPageQueryTool';
 
 export const MainLayout = observer(() => {
   const modal = (
-    <ModalRoot activeModal={modalStore.modal.body} onClose={() => modalStore.closeModal()}>
+    <ModalRoot activeModal={modalStore.modal.body} onClose={modalStore.closeModal}>
       <ModalPageWelcome id={MODAL_PAGE_WELCOME} />
       <ModalPageOpenDB id={MODAL_PAGE_OPEN_DB} />
       <ModalPageRecEdit id={MODAL_PAGE_EDIT_REC} />
@@ -25,7 +25,7 @@ export const MainLayout = observer(() => {
   );
 
   return (
-    <SplitLayout modal={modal}>
+    <SplitLayout modal={modal} popout={modalStore.popout.body}>
       <SplitCol>
         <TabsContainer />
         <Toast />

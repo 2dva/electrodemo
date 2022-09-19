@@ -1,4 +1,7 @@
 import {
+  ActionSheet,
+  ActionSheetDefaultIosCloseItem,
+  ActionSheetItem,
   Button,
   CustomSelect,
   Div,
@@ -13,23 +16,14 @@ import {
 import DataGrid, { FormatterProps } from 'react-data-grid';
 import { observer } from 'mobx-react';
 import { autorun } from 'mobx';
-import { useEffect, useState } from 'react';
-import { Icon24Add, Icon24Cancel } from '@vkontakte/icons';
+import { ReactNode, useEffect, useState } from 'react';
+import { Icon16MoreVertical, Icon24Add, Icon24Cancel } from '@vkontakte/icons';
+import { ToggleRef } from '@vkontakte/vkui/dist/components/ActionSheet/types';
 import { DEFAULT_ROW_LIMIT, IPanelProps } from '../constants';
 import { disconnectRec, fetchRecRows, openAddRecDialog, openEditRecDialog, recStore } from '../stores/recStore';
 import { appStore } from '../stores/appStore';
 import { CategoryArray, IRecDB } from '../../commonConstants';
-
-const catFormatter = (column: FormatterProps<IRecDB>): string => {
-  return CategoryArray[column.row.cat_id] || '[unknown]';
-};
-
-const columns = [
-  { key: 'rec_id', name: 'Id', width: 30 },
-  { key: 'date', name: 'Day', width: 100 },
-  { key: 'cat_id', name: 'Category', width: 120, formatter: catFormatter },
-  { key: 'title', name: 'Title' },
-];
+import { modalStore } from '../stores/modalStore';
 
 const dgDarkClassName = 'rdg-dark';
 
@@ -45,8 +39,53 @@ const visibleRowCountOptions = [
   { label: '25', value: 25 },
 ];
 
+const onClose = () => modalStore.closePopout();
+
+const showRowMenu = (targetNode: EventTarget, recId: number | undefined) => {
+  console.log('context menu for row', recId);
+  modalStore.openPopout(
+    <ActionSheet
+      iosCloseItem={<ActionSheetDefaultIosCloseItem />}
+      onClose={onClose}
+      toggleRef={targetNode as ToggleRef}
+    >
+      <ActionSheetItem autoclose>Add record</ActionSheetItem>
+      <ActionSheetItem autoclose>Edit record</ActionSheetItem>
+      <ActionSheetItem autoclose>Delete record</ActionSheetItem>
+    </ActionSheet>
+  );
+};
+
+const catFormatter = (column: FormatterProps<IRecDB>): string => {
+  return CategoryArray[column.row.cat_id] || '[unknown]';
+};
+
+const actionFormatter = (column: FormatterProps<IRecDB>): ReactNode => {
+  const recId = column.row.rec_id;
+  return (
+    <Button
+      before={<Icon16MoreVertical />}
+      sizeY={SizeType.COMPACT}
+      mode="tertiary"
+      appearance="neutral"
+      value={recId}
+      data={`${recId}`}
+      onClick={(e) => showRowMenu(e.target, recId)}
+    />
+  );
+};
+
+const columns = [
+  { key: 'rec_id', name: 'Id', width: 30 },
+  { key: 'date', name: 'Day', width: 100 },
+  { key: 'cat_id', name: 'Category', width: 120, formatter: catFormatter },
+  { key: 'title', name: 'Title' },
+  { key: 'action', name: '', width: 80, formatter: actionFormatter },
+];
+
 export const PanelRecs = observer(({ id }: IPanelProps) => {
   const [category, setCategory] = useState<number>(-1);
+  const [rowCount, setRowCount] = useState(DEFAULT_ROW_LIMIT);
 
   const onRowDClick = (row: IRecDB) => {
     if (row.rec_id) {
@@ -57,8 +96,6 @@ export const PanelRecs = observer(({ id }: IPanelProps) => {
   const resetFilters = () => {
     setCategory(-1);
   };
-
-  const [rowCount, setRowCount] = useState(DEFAULT_ROW_LIMIT);
 
   useEffect(() => {
     fetchRecRows(rowCount);

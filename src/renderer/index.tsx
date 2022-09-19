@@ -50,6 +50,7 @@ ipcr
 ipcr.sendMessage(Channels.IPC_EVENT_CHANNEL, ['ready']);
 
 if (demoMode) {
+  console.log('@@@@@@@@@@@ DEMO MODE @@@@@@@@@@');
   modalStore.openModal(MODAL_PAGE_WELCOME);
 } else if (localStorage.getItem('settingRestore') === '1') {
   const lastConnectionFilename = localStorage.getItem('settingLastFilename');
