@@ -1,6 +1,5 @@
 import { makeAutoObservable } from 'mobx';
 import { ReactNode } from 'react';
-import { ActionSheet, ActionSheetDefaultIosCloseItem, ActionSheetItem } from '@vkontakte/vkui';
 
 export const MODAL_PAGE_WELCOME = 'page_welcome';
 export const MODAL_PAGE_OPEN_DB = 'page_open_db';

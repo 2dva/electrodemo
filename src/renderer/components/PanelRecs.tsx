@@ -41,7 +41,7 @@ const visibleRowCountOptions = [
 
 const onClose = () => modalStore.closePopout();
 
-const showRowMenu = (targetNode: EventTarget, recId: number | undefined) => {
+const showRowMenu = (targetNode: EventTarget, recId: number) => {
   console.log('context menu for row', recId);
   modalStore.openPopout(
     <ActionSheet
@@ -49,8 +49,12 @@ const showRowMenu = (targetNode: EventTarget, recId: number | undefined) => {
       onClose={onClose}
       toggleRef={targetNode as ToggleRef}
     >
-      <ActionSheetItem autoclose>Add record</ActionSheetItem>
-      <ActionSheetItem autoclose>Edit record</ActionSheetItem>
+      <ActionSheetItem onClick={openAddRecDialog} autoclose>
+        Add record
+      </ActionSheetItem>
+      <ActionSheetItem onClick={() => openEditRecDialog(recId)} autoclose>
+        Edit record
+      </ActionSheetItem>
       <ActionSheetItem autoclose>Delete record</ActionSheetItem>
     </ActionSheet>
   );
@@ -70,7 +74,7 @@ const actionFormatter = (column: FormatterProps<IRecDB>): ReactNode => {
       appearance="neutral"
       value={recId}
       data={`${recId}`}
-      onClick={(e) => showRowMenu(e.target, recId)}
+      onClick={(e) => recId && showRowMenu(e.target, recId)}
     />
   );
 };
