@@ -1,6 +1,7 @@
 import { ipcMain } from 'electron';
 import {
   closeDB,
+  dbDeleteRec,
   dbExecQuery,
   dbFetchRecRow,
   dbFetchRecRows,
@@ -57,6 +58,10 @@ const Api: IAPI = {
       date,
     };
     return dbUpdateRecRow(data as IRecItem);
+  },
+
+  deleteRec: ({ recId }) => {
+    return dbDeleteRec(recId as number);
   },
 
   insertRecTestRows: ({ n }) => {

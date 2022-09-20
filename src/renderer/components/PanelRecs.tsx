@@ -2,6 +2,7 @@ import {
   ActionSheet,
   ActionSheetDefaultIosCloseItem,
   ActionSheetItem,
+  Alert,
   Button,
   CustomSelect,
   Div,
@@ -20,7 +21,14 @@ import { ReactNode, useEffect, useState } from 'react';
 import { Icon16MoreVertical, Icon24Add, Icon24Cancel } from '@vkontakte/icons';
 import { ToggleRef } from '@vkontakte/vkui/dist/components/ActionSheet/types';
 import { DEFAULT_ROW_LIMIT, IPanelProps } from '../constants';
-import { disconnectRec, fetchRecRows, openAddRecDialog, openEditRecDialog, recStore } from '../stores/recStore';
+import {
+  deleteRec,
+  disconnectRec,
+  fetchRecRows,
+  openAddRecDialog,
+  openEditRecDialog,
+  recStore,
+} from '../stores/recStore';
 import { appStore } from '../stores/appStore';
 import { CategoryArray, IRecDB } from '../../commonConstants';
 import { modalStore } from '../stores/modalStore';
@@ -41,6 +49,29 @@ const visibleRowCountOptions = [
 
 const onClose = () => modalStore.closePopout();
 
+const showDeleteConfirm = (recId: number) => {
+  modalStore.openPopout(
+    <Alert
+      actions={[
+        {
+          title: 'Cancel',
+          autoclose: true,
+          mode: 'cancel',
+        },
+        {
+          title: 'Delete',
+          mode: 'destructive',
+          autoclose: true,
+          action: () => deleteRec(recId),
+        },
+      ]}
+      actionsLayout="horizontal"
+      onClose={modalStore.closePopout}
+      header={`Confirm delete record #${recId}`}
+    />
+  );
+};
+
 const showRowMenu = (targetNode: EventTarget, recId: number) => {
   console.log('context menu for row', recId);
   modalStore.openPopout(
@@ -55,7 +86,9 @@ const showRowMenu = (targetNode: EventTarget, recId: number) => {
       <ActionSheetItem onClick={() => openEditRecDialog(recId)} autoclose>
         Edit record
       </ActionSheetItem>
-      <ActionSheetItem autoclose>Delete record</ActionSheetItem>
+      <ActionSheetItem onClick={() => showDeleteConfirm(recId)} autoclose>
+        Delete record
+      </ActionSheetItem>
     </ActionSheet>
   );
 };

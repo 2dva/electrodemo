@@ -1,7 +1,13 @@
 import path from 'path';
 import { closeFileDatabase, execQuery, getQuery, getQueryAll, openFileDatabase, prepareQuery } from './engine';
 import { formatSQLDate, IRecItem } from '../commonConstants';
-import { SQL_INSERT_REC_ROW, SQL_SELECT_REC_ROW, SQL_SELECT_REC_ROWS, SQL_UPDATE_REC_ROW } from './sqlConstants';
+import {
+  SQL_DELETE_REC_ROW,
+  SQL_INSERT_REC_ROW,
+  SQL_SELECT_REC_ROW,
+  SQL_SELECT_REC_ROWS,
+  SQL_UPDATE_REC_ROW,
+} from './sqlConstants';
 
 const dbTestFile = '../test.db';
 const dbTestFilePath = path.resolve(__dirname, dbTestFile);
@@ -76,6 +82,17 @@ export const dbInsertRecTestRows = (n: number) => {
         reject();
       });
   });
+};
+
+export const dbDeleteRec = (recId: number) => {
+  const params = [recId];
+  return execQuery(SQL_DELETE_REC_ROW, params)
+    .then((result) => {
+      return result;
+    })
+    .catch((err) => {
+      console.log(`Async Database delete query error`, err);
+    });
 };
 
 export const dbExecQuery = (query: string) => {
