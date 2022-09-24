@@ -2,6 +2,7 @@ import { observer } from 'mobx-react';
 import { ModalRoot, SplitCol, SplitLayout } from '@vkontakte/vkui';
 import {
   MODAL_PAGE_EDIT_REC,
+  MODAL_PAGE_IMPORT_TOOL,
   MODAL_PAGE_OPEN_DB,
   MODAL_PAGE_QUERY_TOOL,
   MODAL_PAGE_WELCOME,
@@ -13,6 +14,7 @@ import { ModalPageRecEdit } from './ModalPageRecEdit';
 import { ModalPageWelcome } from './ModalPageWelcome';
 import { Toast } from './Toast';
 import { ModalPageQueryTool } from './ModalPageQueryTool';
+import { ModalPageImportTool } from './ModalPageImportTool';
 
 export const MainLayout = observer(() => {
   const modal = (
@@ -21,6 +23,7 @@ export const MainLayout = observer(() => {
       <ModalPageOpenDB id={MODAL_PAGE_OPEN_DB} />
       <ModalPageRecEdit id={MODAL_PAGE_EDIT_REC} />
       <ModalPageQueryTool id={MODAL_PAGE_QUERY_TOOL} />
+      <ModalPageImportTool id={MODAL_PAGE_IMPORT_TOOL} />
     </ModalRoot>
   );
 
