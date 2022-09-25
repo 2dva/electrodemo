@@ -1,5 +1,13 @@
 import path from 'path';
-import { closeFileDatabase, execQuery, getQuery, getQueryAll, openFileDatabase, prepareQuery } from './engine';
+import {
+  closeFileDatabase,
+  encryptDB,
+  execQuery,
+  getQuery,
+  getQueryAll,
+  openFileDatabase,
+  prepareQuery,
+} from './engine';
 import { formatSQLDate, IRecItem } from '../commonConstants';
 import {
   SQL_DELETE_REC_ROW,
@@ -9,8 +17,10 @@ import {
   SQL_UPDATE_REC_ROW,
 } from './sqlConstants';
 
-const dbTestFile = '../test.db';
-const dbTestFilePath = path.resolve(__dirname, dbTestFile);
+export const encryptDemoDB = () => {
+  const testEncryptKey = 'qwe';
+  encryptDB(testEncryptKey).catch(() => {});
+};
 
 export const dbFetchRecRows = (limit = -1) => {
   return getQueryAll(SQL_SELECT_REC_ROWS, [limit])
@@ -112,13 +122,21 @@ export const closeDB = () => {
 };
 
 export const openDBTest = () => {
+  const dbTestFile = '../test.db';
+  const dbTestFilePath = path.resolve(__dirname, dbTestFile);
+
   openFileDatabase(dbTestFilePath).catch((err) => {
     console.log(`Test database open err`, err);
   });
 };
 
 export const openDBFile = (filePath: string) => {
-  return openFileDatabase(filePath).catch(() => {
-    console.log(`Database error opening file "${filePath}"`);
-  });
+  return openFileDatabase(filePath)
+    .then(() => {
+      // encryptDemoDB();
+      return true;
+    })
+    .catch(() => {
+      console.log(`Database error opening file "${filePath}"`);
+    });
 };

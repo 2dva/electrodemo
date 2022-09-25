@@ -1,8 +1,10 @@
 import { existsSync, statSync } from 'fs-extra';
 import { ipcMain } from 'electron';
-import { IEngineWrapper, IStatement, Sqlite3Wrapper } from './Sqlite3Wrapper';
+import { Sqlite3Wrapper } from './Sqlite3Wrapper';
 import { EVENT_COMMAND_SEND } from '../main/constants';
 import { Commands } from '../commonConstants';
+import { IEngineWrapper, IStatement } from './sqlConstants';
+import { BetterSqlite3Wrapper } from './BetterSqlite3Wrapper';
 
 let engine: IEngineWrapper | undefined;
 
@@ -12,6 +14,7 @@ export enum Engines {
   // https://www.npmjs.com/package/sqlite3
   DB_ENGINE_SQLITE3 = 'sqlite3',
   // https://www.npmjs.com/package/better-sqlite3-with-prebuilds
+  // https://github.com/m4heshd/better-sqlite3-multiple-ciphers
   DB_ENGINE_BETTER_SQLITE3 = 'better-sqlite3',
 }
 
@@ -21,8 +24,7 @@ const getEngineClass = (engineType: Engines = Engines.DB_ENGINE_SQLITE3) => {
       // not implemented
       break;
     case Engines.DB_ENGINE_BETTER_SQLITE3:
-      // not implemented
-      break;
+      return BetterSqlite3Wrapper;
     case Engines.DB_ENGINE_SQLITE3:
     default:
   }
@@ -30,6 +32,7 @@ const getEngineClass = (engineType: Engines = Engines.DB_ENGINE_SQLITE3) => {
 };
 
 export const closeFileDatabase = () => {
+  engine?.close();
   engine = undefined;
 
   // Send info to client
@@ -104,5 +107,12 @@ export const execQuery = (query: string, params: Array<unknown>): Promise<boolea
         resolve(true);
       }
     });
+  });
+};
+
+export const encryptDB = (key: string): Promise<boolean> => {
+  return new Promise((resolve) => {
+    engine?.encrypt?.(key);
+    resolve(true);
   });
 };

@@ -1,127 +1,46 @@
-import {
-  Button,
-  ButtonGroup,
-  Checkbox,
-  ContentCard,
-  CustomSelect,
-  FormItem,
-  FormLayoutGroup,
-  Group,
-  Header,
-  Panel,
-  SimpleCell,
-  SizeType,
-  Switch,
-  Text,
-} from '@vkontakte/vkui';
-import { observer } from 'mobx-react';
+import { Cell, Group, Panel, SplitCol, SplitLayout, View } from '@vkontakte/vkui';
 import { useState } from 'react';
-import { Icon24Cancel } from '@vkontakte/icons';
 import { IPanelProps } from '../constants';
-import { MODAL_PAGE_IMPORT_TOOL, MODAL_PAGE_OPEN_DB, MODAL_PAGE_QUERY_TOOL, modalStore } from '../stores/modalStore';
-import { appStore } from '../stores/appStore';
-import { insertRecTestRows } from '../stores/recStore';
+import { GroupSettingsAppearance } from './GroupSettingsAppearance';
+import { GroupSettingsDB } from './GroupSettingsDB';
 
-const countOptions = [
-  { label: '10', value: 10 },
-  { label: '100', value: 100 },
-  { label: '1000', value: 1000 },
-];
+const panels = ['Database', 'Appearance'];
 
-export const PanelSettings = observer(({ id }: IPanelProps) => {
-  const [count, setCount] = useState(10);
-
-  const insertTestRecords = () => {
-    insertRecTestRows(count);
-  };
-
-  const openQueryTool = () => {
-    modalStore.openModal(MODAL_PAGE_QUERY_TOOL);
-  };
-
-  const openImportTool = () => {
-    modalStore.openModal(MODAL_PAGE_IMPORT_TOOL);
+export const PanelSettings = ({ id }: IPanelProps) => {
+  const [panel, setPanel] = useState(panels[0]);
+  const activeCellStyle = {
+    backgroundColor: 'var(--vkui--color_background_secondary)',
+    borderRadius: 8,
   };
 
   return (
-    <Panel id={id}>
-      <Group header={<Header mode="secondary">Database</Header>}>
-        <FormItem>
-          <ButtonGroup>
-            <Button onClick={() => modalStore.openModal(MODAL_PAGE_OPEN_DB)}>Open Database</Button>
-            <Button
-              onClick={() => appStore.closeDB()}
-              disabled={!appStore.dbinfo.connected}
-              before={<Icon24Cancel />}
-              appearance="neutral"
-              title="Close Database"
-            />
-          </ButtonGroup>
-        </FormItem>
-        <Checkbox
-          style={{ margin: '0 15px 0 15px' }}
-          sizeY={SizeType.COMPACT}
-          checked={appStore.settings.restoreOnStartup}
-          onChange={appStore.switchSettingRestore}
-        >
-          Restore connection on startup
-        </Checkbox>
-        <FormItem>
-          {appStore.dbinfo.connected && (
-            <ContentCard
-              subtitle="Status: connected"
-              header={appStore.dbinfo.fileName}
-              caption={`${Math.round(appStore.dbinfo.fileSize / 1024)} Kb`}
-              mode="tint"
-            />
-          )}
-          {!appStore.dbinfo.connected && <ContentCard subtitle="Status: disconnected" mode="tint" />}
-        </FormItem>
-        <FormLayoutGroup mode="horizontal" style={{ width: '302px' }}>
-          <FormItem style={{ flexBasis: '156px', flexGrow: 1 }}>
-            <Button
-              style={{ height: '34px' }}
-              onClick={() => insertTestRecords()}
-              disabled={!appStore.dbinfo.connected}
-            >
-              Add N test records
-            </Button>
-          </FormItem>
-          <FormItem style={{ flexBasis: '29px', flexGrow: 0 }}>
-            <Text style={{ lineHeight: '34px' }}>N =</Text>
-          </FormItem>
-          <FormItem style={{ flexBasis: '90px', margin: 0 }}>
-            <CustomSelect
-              options={countOptions}
-              sizeY={SizeType.COMPACT}
-              defaultValue={10}
-              mode="plain"
-              onChange={(e) => setCount(+e.currentTarget.value)}
-            />
-          </FormItem>
-        </FormLayoutGroup>
-        <FormItem>
-          <Button onClick={openQueryTool} disabled={!appStore.dbinfo.connected}>
-            Query tool
-          </Button>
-        </FormItem>
-        <FormItem>
-          <Button onClick={openImportTool} disabled={!appStore.dbinfo.connected}>
-            Import records
-          </Button>
-        </FormItem>
-      </Group>
-      <Group header={<Header mode="secondary">Appearance</Header>}>
-        <FormItem>
-          <SimpleCell
-            sizeY={SizeType.COMPACT}
-            Component="label"
-            after={<Switch defaultChecked={appStore.settings.dark} onChange={appStore.switchTheme} />}
-          >
-            Dark theme
-          </SimpleCell>
-        </FormItem>
-      </Group>
-    </Panel>
+    <SplitLayout style={{ justifyContent: 'center' }} id={id}>
+      <SplitCol width={280} maxWidth={280}>
+        <Panel>
+          <Group>
+            {panels.map((i) => (
+              <Cell
+                key={i}
+                disabled={i === panel}
+                style={i === panel ? activeCellStyle : {}}
+                onClick={() => setPanel(i)}
+              >
+                {i}
+              </Cell>
+            ))}
+          </Group>
+        </Panel>
+      </SplitCol>
+      <SplitCol spaced>
+        <View activePanel={panel}>
+          <Panel id={panels[0]}>
+            <GroupSettingsDB />
+          </Panel>
+          <Panel id={panels[1]}>
+            <GroupSettingsAppearance />
+          </Panel>
+        </View>
+      </SplitCol>
+    </SplitLayout>
   );
-});
+};
