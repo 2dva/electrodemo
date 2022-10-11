@@ -26,9 +26,10 @@ const getEngineClass = (engineType: Engines = Engines.DB_ENGINE_SQLITE3) => {
     case Engines.DB_ENGINE_BETTER_SQLITE3:
       return BetterSqlite3Wrapper;
     case Engines.DB_ENGINE_SQLITE3:
+      return Sqlite3Wrapper;
     default:
   }
-  return Sqlite3Wrapper;
+  return BetterSqlite3Wrapper;
 };
 
 export const closeFileDatabase = () => {
@@ -59,9 +60,9 @@ export const openFileDatabase = (fileName: string): Promise<boolean> => {
   });
 };
 
-export const getQuery = (query: string, params: Array<unknown>): Promise<unknown> => {
+export const getQuery = (query: string, params?: Array<unknown>): Promise<unknown> => {
   return new Promise((resolve, reject) => {
-    engine?.get(query, params, (err: unknown, row: unknown) => {
+    engine?.get(query, params || [], (err: unknown, row: unknown) => {
       if (err) {
         console.log(`getQuery: query error`, err);
         reject(err);

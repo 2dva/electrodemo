@@ -12,6 +12,7 @@ import { formatSQLDate, IRecItem } from '../commonConstants';
 import {
   SQL_DELETE_REC_ROW,
   SQL_INSERT_REC_ROW,
+  SQL_SELECT_REC_HEALTH,
   SQL_SELECT_REC_ROW,
   SQL_SELECT_REC_ROWS,
   SQL_UPDATE_REC_ROW,
@@ -22,13 +23,23 @@ export const encryptDemoDB = () => {
   encryptDB(testEncryptKey).catch(() => {});
 };
 
+export const dbCheckHealth = () => {
+  return getQuery(SQL_SELECT_REC_HEALTH)
+    .then(() => {
+      return true;
+    })
+    .catch((err) => {
+      console.log(`Async Database health not ok`, err);
+    });
+};
+
 export const dbFetchRecRows = (limit = -1) => {
   return getQueryAll(SQL_SELECT_REC_ROWS, [limit])
     .then((rows) => {
       return rows;
     })
     .catch((err) => {
-      console.log(`Async Database query error`, err);
+      console.log(`Async Database query all error`, err);
     });
 };
 
@@ -38,7 +49,7 @@ export const dbFetchRecRow = (recId: number) => {
       return result;
     })
     .catch((err) => {
-      console.log(`Async Database insert query error`, err);
+      console.log(`Async Database query error`, err);
     });
 };
 
@@ -70,7 +81,7 @@ export const dbInsertRecTestRows = (n: number) => {
   };
 
   const getRandomCategory = (): number => {
-    return Math.floor((Math.random() * 100) % 4) + 1;
+    return Math.floor((Math.random() * 100) % 4);
   };
   console.log('Api.insertRecTestRows', n);
   return new Promise((resolve, reject) => {

@@ -15,7 +15,7 @@ export const PanelSettings = ({ id }: IPanelProps) => {
 
   return (
     <SplitLayout style={{ justifyContent: 'center' }} id={id}>
-      <SplitCol width={280} maxWidth={280}>
+      <SplitCol width={180} maxWidth={180}>
         <Panel>
           <Group>
             {panels.map((i) => (

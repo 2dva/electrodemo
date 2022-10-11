@@ -1,6 +1,7 @@
 import { ipcMain } from 'electron';
 import {
   closeDB,
+  dbCheckHealth,
   dbDeleteRec,
   dbExecQuery,
   dbFetchRecRow,
@@ -18,6 +19,10 @@ type IAPI = Record<string, IApiFunction>;
 const Api: IAPI = {
   openDB: ({ filePath }) => {
     return openDBFile(filePath as string);
+  },
+
+  checkHealthDB: () => {
+    return dbCheckHealth();
   },
 
   execDB: ({ query }) => {

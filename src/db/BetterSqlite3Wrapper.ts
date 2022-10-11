@@ -40,11 +40,13 @@ export class BetterSqlite3Wrapper implements IEngineWrapper {
     return this.database.prepare(query);
   }
 
-  // @ts-ignore
-  // eslint-disable-next-line class-methods-use-this
+  decrypt(key: string) {
+    this.database.pragma(`key='${key}'`);
+    return null;
+  }
+
   encrypt(key: string) {
-    // this.database.pragma(`key='${key}'`);
-    // db.pragma("rekey='secret-key'");
+    this.database.pragma(`rekey='${key}'`);
     return null;
   }
 

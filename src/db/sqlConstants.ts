@@ -6,9 +6,12 @@ export interface IEngineWrapper {
   all(query: string, params: Array<unknown>, cb: (err: unknown, rows: unknown[]) => void): void;
   get(query: string, params: Array<unknown>, cb: (err: unknown, row: unknown) => void): void;
   prepare(query: string): IStatement;
+  decrypt?(key: string): void;
   encrypt?(key: string): void;
   close(): void;
 }
+
+export const SQL_SELECT_REC_HEALTH = 'SELECT * FROM rec LIMIT 1';
 
 export const SQL_SELECT_REC_ROWS = 'SELECT rec_id, date, cat_id, created, title FROM rec ORDER BY rec_id DESC LIMIT ?';
 
