@@ -8,14 +8,16 @@ import {
   openFileDatabase,
   prepareQuery,
 } from './engine';
-import { formatSQLDate, IRecItem } from '../commonConstants';
+import { formatSQLDate, IFetchRecParams, IRecItem } from '../commonConstants';
 import {
   SQL_DELETE_REC_ROW,
   SQL_INSERT_REC_ROW,
   SQL_SELECT_REC_HEALTH,
   SQL_SELECT_REC_ROW,
-  SQL_SELECT_REC_ROWS,
   SQL_UPDATE_REC_ROW,
+  SQL_SELECT_REC_ROWS,
+  SQL_SELECT_REC_ROWS_BY_CATEGORY,
+  SQL_SELECT_REC_ROWS_BY_TAGS,
 } from './sqlConstants';
 
 export const encryptDemoDB = () => {
@@ -33,8 +35,18 @@ export const dbCheckHealth = () => {
     });
 };
 
-export const dbFetchRecRows = (limit = -1) => {
-  return getQueryAll(SQL_SELECT_REC_ROWS, [limit])
+export const dbFetchRecRows = (params: IFetchRecParams) => {
+  const { catId, limit = -1, tags } = params;
+  let queryName = SQL_SELECT_REC_ROWS;
+  let queryParams = [limit] as Array<unknown>;
+  if (tags !== undefined) {
+    queryName = SQL_SELECT_REC_ROWS_BY_TAGS;
+    queryParams = [`%${tags}%`, limit];
+  } else if (catId !== undefined) {
+    queryName = SQL_SELECT_REC_ROWS_BY_CATEGORY;
+    queryParams = [catId, limit];
+  }
+  return getQueryAll(queryName, queryParams)
     .then((rows) => {
       return rows;
     })

@@ -41,6 +41,12 @@ export interface IRecItem {
   date?: Date;
 }
 
+export interface IFetchRecParams {
+  limit: number;
+  catId?: number;
+  tags?: string;
+}
+
 export const CategoryArray = ['journal', 'event', 'note', 'news'];
 
 export const formatSQLDate = (date: Date = new Date()): string => {

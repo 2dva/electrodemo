@@ -11,7 +11,7 @@ import {
   dbUpdateRecRow,
   openDBFile,
 } from '../db/manager';
-import { Channels, IRecItem } from '../commonConstants';
+import { Channels, IFetchRecParams, IRecItem } from '../commonConstants';
 
 type IApiFunction = (params: Record<string, unknown>) => unknown;
 type IAPI = Record<string, IApiFunction>;
@@ -37,8 +37,8 @@ const Api: IAPI = {
     return dbFetchRecRow(recId as number);
   },
 
-  fetchRecRows: ({ limit }) => {
-    return dbFetchRecRows(limit as number);
+  fetchRecRows: (params) => {
+    return dbFetchRecRows(params as unknown as IFetchRecParams);
   },
 
   insertRecRow: ({ catId, created, title, text, tags, date }) => {

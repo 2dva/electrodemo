@@ -122,6 +122,7 @@ const columns = [
 
 export const PanelRecs = observer(({ id }: IPanelProps) => {
   const [category, setCategory] = useState<number>(-1);
+  const [tags, setTags] = useState<string>('');
   const [rowCount, setRowCount] = useState(DEFAULT_ROW_LIMIT);
 
   const onRowDClick = (row: IRecDB) => {
@@ -132,11 +133,12 @@ export const PanelRecs = observer(({ id }: IPanelProps) => {
 
   const resetFilters = () => {
     setCategory(-1);
+    setTags('');
   };
 
   useEffect(() => {
-    fetchRecRows(rowCount);
-  }, [rowCount]);
+    fetchRecRows({ limit: rowCount, catId: category > -1 ? category : undefined, tags: tags || undefined });
+  }, [rowCount, category, tags]);
 
   return (
     <Panel id={id}>
@@ -174,10 +176,17 @@ export const PanelRecs = observer(({ id }: IPanelProps) => {
               value={category}
               onChange={(e) => setCategory(+e.target.value)}
               sizeY={SizeType.COMPACT}
+              disabled={tags !== ''}
             />
           </FormItem>
           <FormItem>
-            <Input type="text" placeholder="Search tags" sizeY={SizeType.COMPACT} />
+            <Input
+              type="text"
+              placeholder="Search tags"
+              value={tags}
+              onChange={(e) => setTags(e.target.value)}
+              sizeY={SizeType.COMPACT}
+            />
           </FormItem>
           <FormItem style={{ flexBasis: '60px', flexGrow: 0 }}>
             <Button

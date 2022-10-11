@@ -13,7 +13,14 @@ export interface IEngineWrapper {
 
 export const SQL_SELECT_REC_HEALTH = 'SELECT * FROM rec LIMIT 1';
 
-export const SQL_SELECT_REC_ROWS = 'SELECT rec_id, date, cat_id, created, title FROM rec ORDER BY rec_id DESC LIMIT ?';
+export const SQL_SELECT_REC_ROWS =
+  'SELECT rec_id, date, cat_id, created, title FROM rec ORDER BY date DESC, rec_id DESC LIMIT ?';
+
+export const SQL_SELECT_REC_ROWS_BY_CATEGORY =
+  'SELECT rec_id, date, cat_id, created, title FROM rec WHERE cat_id = ? ORDER BY date DESC, rec_id DESC LIMIT ?';
+
+export const SQL_SELECT_REC_ROWS_BY_TAGS =
+  'SELECT rec_id, date, cat_id, created, title FROM rec WHERE tags LIKE ? ORDER BY date DESC, rec_id DESC LIMIT ?';
 
 export const SQL_SELECT_REC_ROW = 'SELECT * FROM rec WHERE rec_id = ?';
 
