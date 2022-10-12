@@ -176,7 +176,6 @@ export const PanelRecs = observer(({ id }: IPanelProps) => {
               value={category}
               onChange={(e) => setCategory(+e.target.value)}
               sizeY={SizeType.COMPACT}
-              disabled={tags !== ''}
             />
           </FormItem>
           <FormItem>

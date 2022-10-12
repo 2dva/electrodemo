@@ -13,14 +13,8 @@ export interface IEngineWrapper {
 
 export const SQL_SELECT_REC_HEALTH = 'SELECT * FROM rec LIMIT 1';
 
-export const SQL_SELECT_REC_ROWS =
-  'SELECT rec_id, date, cat_id, created, title FROM rec ORDER BY date DESC, rec_id DESC LIMIT ?';
-
-export const SQL_SELECT_REC_ROWS_BY_CATEGORY =
-  'SELECT rec_id, date, cat_id, created, title FROM rec WHERE cat_id = ? ORDER BY date DESC, rec_id DESC LIMIT ?';
-
-export const SQL_SELECT_REC_ROWS_BY_TAGS =
-  'SELECT rec_id, date, cat_id, created, title FROM rec WHERE tags LIKE ? ORDER BY date DESC, rec_id DESC LIMIT ?';
+export const SQL_SELECT_REC_ROWS_TPL =
+  'SELECT rec_id, date, cat_id, created, title FROM rec WHERE %WHERE% ORDER BY date DESC, rec_id DESC LIMIT ?';
 
 export const SQL_SELECT_REC_ROW = 'SELECT * FROM rec WHERE rec_id = ?';
 
@@ -30,3 +24,5 @@ export const SQL_INSERT_REC_ROW =
 export const SQL_UPDATE_REC_ROW = 'UPDATE rec SET cat_id = ?, title = ?, text = ?, tags = ?, date = ? WHERE rec_id = ?';
 
 export const SQL_DELETE_REC_ROW = 'DELETE FROM rec WHERE rec_id = ?';
+
+export const buildSqlSelectRowsQuery = (where: string) => SQL_SELECT_REC_ROWS_TPL.replace('%WHERE%', where);

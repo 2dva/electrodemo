@@ -15,9 +15,7 @@ import {
   SQL_SELECT_REC_HEALTH,
   SQL_SELECT_REC_ROW,
   SQL_UPDATE_REC_ROW,
-  SQL_SELECT_REC_ROWS,
-  SQL_SELECT_REC_ROWS_BY_CATEGORY,
-  SQL_SELECT_REC_ROWS_BY_TAGS,
+  buildSqlSelectRowsQuery,
 } from './sqlConstants';
 
 export const encryptDemoDB = () => {
@@ -37,16 +35,21 @@ export const dbCheckHealth = () => {
 
 export const dbFetchRecRows = (params: IFetchRecParams) => {
   const { catId, limit = -1, tags } = params;
-  let queryName = SQL_SELECT_REC_ROWS;
-  let queryParams = [limit] as Array<unknown>;
-  if (tags !== undefined) {
-    queryName = SQL_SELECT_REC_ROWS_BY_TAGS;
-    queryParams = [`%${tags}%`, limit];
-  } else if (catId !== undefined) {
-    queryName = SQL_SELECT_REC_ROWS_BY_CATEGORY;
-    queryParams = [catId, limit];
+  const whereStatement = ['rec_id > 0'];
+  const queryParams = [];
+
+  if (catId !== undefined) {
+    whereStatement.push('AND cat_id = ?');
+    queryParams.push(catId);
   }
-  return getQueryAll(queryName, queryParams)
+  if (tags !== undefined) {
+    whereStatement.push('AND tags LIKE ?');
+    queryParams.push(`%${tags}%`);
+  }
+  queryParams.push(limit);
+
+  const queryStatement = buildSqlSelectRowsQuery(whereStatement.join(' '));
+  return getQueryAll(queryStatement, queryParams)
     .then((rows) => {
       return rows;
     })
