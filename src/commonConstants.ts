@@ -45,6 +45,7 @@ export interface IFetchRecParams {
   limit: number;
   catId?: number;
   tags?: string;
+  title?: string;
 }
 
 export const CategoryArray = ['journal', 'event', 'note', 'news'];

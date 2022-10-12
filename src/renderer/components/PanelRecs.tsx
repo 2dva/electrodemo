@@ -122,7 +122,8 @@ const columns = [
 
 export const PanelRecs = observer(({ id }: IPanelProps) => {
   const [category, setCategory] = useState<number>(-1);
-  const [tags, setTags] = useState<string>('');
+  const [tags, setTags] = useState<string>();
+  const [title, setTitle] = useState<string>();
   const [rowCount, setRowCount] = useState(DEFAULT_ROW_LIMIT);
 
   const onRowDClick = (row: IRecDB) => {
@@ -137,8 +138,8 @@ export const PanelRecs = observer(({ id }: IPanelProps) => {
   };
 
   useEffect(() => {
-    fetchRecRows({ limit: rowCount, catId: category > -1 ? category : undefined, tags: tags || undefined });
-  }, [rowCount, category, tags]);
+    fetchRecRows({ limit: rowCount, catId: category > -1 ? category : undefined, tags, title });
+  }, [rowCount, category, tags, title]);
 
   return (
     <Panel id={id}>
@@ -178,12 +179,21 @@ export const PanelRecs = observer(({ id }: IPanelProps) => {
               sizeY={SizeType.COMPACT}
             />
           </FormItem>
-          <FormItem>
+          <FormItem style={{ flexBasis: '120px', flexGrow: 0 }}>
             <Input
               type="text"
               placeholder="Search tags"
               value={tags}
               onChange={(e) => setTags(e.target.value)}
+              sizeY={SizeType.COMPACT}
+            />
+          </FormItem>
+          <FormItem style={{ flexBasis: '120px' }}>
+            <Input
+              type="text"
+              placeholder="Search title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
               sizeY={SizeType.COMPACT}
             />
           </FormItem>

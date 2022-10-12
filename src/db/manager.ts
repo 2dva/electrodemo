@@ -34,7 +34,7 @@ export const dbCheckHealth = () => {
 };
 
 export const dbFetchRecRows = (params: IFetchRecParams) => {
-  const { catId, limit = -1, tags } = params;
+  const { catId, limit = -1, tags = '', title = '' } = params;
   const whereStatement = ['rec_id > 0'];
   const queryParams = [];
 
@@ -42,9 +42,13 @@ export const dbFetchRecRows = (params: IFetchRecParams) => {
     whereStatement.push('AND cat_id = ?');
     queryParams.push(catId);
   }
-  if (tags !== undefined) {
+  if (tags !== '') {
     whereStatement.push('AND tags LIKE ?');
     queryParams.push(`%${tags}%`);
+  }
+  if (title !== '') {
+    whereStatement.push('AND title LIKE ?');
+    queryParams.push(`%${title}%`);
   }
   queryParams.push(limit);
 
